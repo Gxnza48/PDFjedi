@@ -108,13 +108,18 @@
   /* ---------- Header scrolled state ---------- */
   const header = document.querySelector('.site-header');
   if (header) {
-    ScrollTrigger.create({
-      start: 'top -20',
-      end: 99999,
-      onUpdate: (self) => {
-        header.classList.toggle('is-scrolled', self.progress > 0);
-      },
-    });
+    const SCROLL_THRESHOLD = 16;
+    const updateHeader = (y) => {
+      const scrolled = (typeof y === 'number' ? y : window.scrollY || window.pageYOffset || 0) > SCROLL_THRESHOLD;
+      header.classList.toggle('is-scrolled', scrolled);
+    };
+    if (lenis) {
+      lenis.on('scroll', ({ scroll }) => updateHeader(scroll));
+    }
+    // Always wire a window listener too — covers cases where Lenis is disabled
+    // (reduced-motion) or before Lenis emits its first event.
+    window.addEventListener('scroll', () => updateHeader(), { passive: true });
+    updateHeader(); // initial state
   }
 
   /* ---------- Scroll progress ---------- */
@@ -200,6 +205,63 @@
         gsap.to('.window-prompt', { x: 0, y: 0, rotate: -2, duration: 0.8 });
         gsap.to('.window-output', { x: 0, y: 0, rotate: 3, duration: 0.8 });
       });
+    }
+  }
+
+  /* ---------- Marquee wheel (GSAP-driven, resize-proof) ---------- */
+  // Both rows duplicate their content, so animating xPercent from -50 to 0
+  // (or 0 to -50) produces a seamless infinite loop independent of font size,
+  // image load timing, or viewport width.
+  const buildMarquee = () => {
+    const rows = document.querySelectorAll('.marquee-row');
+    rows.forEach((row) => {
+      const track = row.querySelector('.marquee-track');
+      if (!track) return;
+      const dir = row.dataset.direction === 'ltr' ? 'ltr' : 'rtl';
+      const duration = parseFloat(row.dataset.speed) || (dir === 'ltr' ? 38 : 30);
+
+      // Kill any previous tween on this track (in case of resize re-init).
+      gsap.killTweensOf(track);
+
+      const fromX = dir === 'ltr' ? -50 : 0;
+      const toX   = dir === 'ltr' ?   0 : -50;
+
+      const tween = gsap.fromTo(
+        track,
+        { xPercent: fromX },
+        {
+          xPercent: toX,
+          duration,
+          ease: 'none',
+          repeat: -1,
+        }
+      );
+
+      // Pause on hover (mirrors the previous CSS :hover behaviour).
+      row.addEventListener('mouseenter', () => tween.timeScale(0.15));
+      row.addEventListener('mouseleave', () => tween.timeScale(1));
+    });
+  };
+
+  if (prefersReduced) {
+    // Static fallback: keep content centred-ish and don't animate.
+    document.querySelectorAll('.marquee-row .marquee-track').forEach((t) => {
+      gsap.set(t, { xPercent: -25 });
+    });
+  } else {
+    // Wait for marquee images to load before measuring/starting.
+    const marqueeImgs = document.querySelectorAll('.marquee img');
+    if (marqueeImgs.length) {
+      let pending = marqueeImgs.length;
+      const done = () => { if (--pending <= 0) buildMarquee(); };
+      marqueeImgs.forEach((img) => {
+        if (img.complete && img.naturalWidth) done();
+        else { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); }
+      });
+      // Hard fallback after 1500ms in case an image stalls.
+      setTimeout(() => { if (pending > 0) { pending = 0; buildMarquee(); } }, 1500);
+    } else {
+      buildMarquee();
     }
   }
 

@@ -518,23 +518,11 @@ body {
 }
 .marquee-track .sep { color: var(--text-faint); font-size: .7em; }
 
-/* Direction: TOP row moves left → right */
-.marquee-row[data-direction="ltr"] .marquee-track {
-  animation: marquee-ltr 38s linear infinite;
-}
-@keyframes marquee-ltr {
-  from { transform: translateX(-50%); }
-  to   { transform: translateX(0); }
-}
-
-/* BOTTOM row moves right → left (counter-rotating "wheel") */
-.marquee-row[data-direction="rtl"] .marquee-track {
-  animation: marquee-rtl 30s linear infinite;
-}
-@keyframes marquee-rtl {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
-}
+/* Marquee animation is GSAP-driven (see script.js) so direction is explicit
+   and image-load timing can't break the loop. CSS only provides the static
+   layout and a no-JS fallback below. */
+.marquee-row[data-direction="ltr"] .marquee-track { transform: translate3d(-50%, 0, 0); }
+.marquee-row[data-direction="rtl"] .marquee-track { transform: translate3d(0, 0, 0); }
 
 /* Smaller bottom row — more wheel-spoke feel */
 .marquee-row-sm .marquee-track {
@@ -544,7 +532,10 @@ body {
   gap: 28px;
 }
 .marquee-row-sm { padding-block: 14px; }
-.marquee-row:hover .marquee-track { animation-play-state: paused; }
+
+/* No-JS / reduced-motion fallback: keep the tracks visible and statically positioned. */
+.no-js .marquee-row[data-direction="ltr"] .marquee-track,
+.no-js .marquee-row[data-direction="rtl"] .marquee-track { transform: translate3d(-25%, 0, 0); }
 
 /* ---------- Section heads ---------- */
 .section-head {
