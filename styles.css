@@ -518,11 +518,9 @@ body {
 }
 .marquee-track .sep { color: var(--text-faint); font-size: .7em; }
 
-/* Marquee animation is GSAP-driven (see script.js) so direction is explicit
-   and image-load timing can't break the loop. CSS only provides the static
-   layout and a no-JS fallback below. */
-.marquee-row[data-direction="ltr"] .marquee-track { transform: translate3d(-50%, 0, 0); }
-.marquee-row[data-direction="rtl"] .marquee-track { transform: translate3d(0, 0, 0); }
+/* Marquee animation is fully GSAP-driven (see script.js). CSS deliberately
+   does NOT set a transform on the track here — that was previously fighting
+   the inline transform GSAP writes every frame. */
 
 /* Smaller bottom row — more wheel-spoke feel */
 .marquee-row-sm .marquee-track {
@@ -532,10 +530,6 @@ body {
   gap: 28px;
 }
 .marquee-row-sm { padding-block: 14px; }
-
-/* No-JS / reduced-motion fallback: keep the tracks visible and statically positioned. */
-.no-js .marquee-row[data-direction="ltr"] .marquee-track,
-.no-js .marquee-row[data-direction="rtl"] .marquee-track { transform: translate3d(-25%, 0, 0); }
 
 /* ---------- Section heads ---------- */
 .section-head {

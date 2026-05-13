@@ -208,62 +208,44 @@
     }
   }
 
-  /* ---------- Marquee wheel (GSAP-driven, resize-proof) ---------- */
-  // Both rows duplicate their content, so animating xPercent from -50 to 0
-  // (or 0 to -50) produces a seamless infinite loop independent of font size,
-  // image load timing, or viewport width.
+  /* ---------- Marquee wheel (GSAP-driven, runs unconditionally) ----------
+     Both rows duplicate their content. Animating xPercent from -50 to 0
+     produces a seamless left-to-right infinite loop, resolution-independent
+     and unaffected by image-load timing because CSS already reserves the
+     image dimensions.
+  */
   const buildMarquee = () => {
     const rows = document.querySelectorAll('.marquee-row');
     rows.forEach((row) => {
       const track = row.querySelector('.marquee-track');
       if (!track) return;
-      const dir = row.dataset.direction === 'ltr' ? 'ltr' : 'rtl';
-      const duration = parseFloat(row.dataset.speed) || (dir === 'ltr' ? 38 : 30);
 
-      // Kill any previous tween on this track (in case of resize re-init).
+      // Per the explicit request, both rows roll LEFT → RIGHT. The bottom
+      // row runs slightly faster than the top so the two read as a
+      // parallax wheel rather than a single rigid sheet.
+      const isSecondary = row.classList.contains('marquee-row-sm');
+      const duration = parseFloat(row.dataset.speed) || (isSecondary ? 16 : 22);
+
       gsap.killTweensOf(track);
+      gsap.set(track, { xPercent: -50 });
 
-      const fromX = dir === 'ltr' ? -50 : 0;
-      const toX   = dir === 'ltr' ?   0 : -50;
+      const tween = gsap.to(track, {
+        xPercent: 0,
+        duration,
+        ease: 'none',
+        repeat: -1,
+      });
 
-      const tween = gsap.fromTo(
-        track,
-        { xPercent: fromX },
-        {
-          xPercent: toX,
-          duration,
-          ease: 'none',
-          repeat: -1,
-        }
-      );
-
-      // Pause on hover (mirrors the previous CSS :hover behaviour).
-      row.addEventListener('mouseenter', () => tween.timeScale(0.15));
+      // Slow (but don't stop) on hover so the wheel is still readable.
+      row.addEventListener('mouseenter', () => tween.timeScale(0.2));
       row.addEventListener('mouseleave', () => tween.timeScale(1));
     });
   };
 
-  if (prefersReduced) {
-    // Static fallback: keep content centred-ish and don't animate.
-    document.querySelectorAll('.marquee-row .marquee-track').forEach((t) => {
-      gsap.set(t, { xPercent: -25 });
-    });
-  } else {
-    // Wait for marquee images to load before measuring/starting.
-    const marqueeImgs = document.querySelectorAll('.marquee img');
-    if (marqueeImgs.length) {
-      let pending = marqueeImgs.length;
-      const done = () => { if (--pending <= 0) buildMarquee(); };
-      marqueeImgs.forEach((img) => {
-        if (img.complete && img.naturalWidth) done();
-        else { img.addEventListener('load', done, { once: true }); img.addEventListener('error', done, { once: true }); }
-      });
-      // Hard fallback after 1500ms in case an image stalls.
-      setTimeout(() => { if (pending > 0) { pending = 0; buildMarquee(); } }, 1500);
-    } else {
-      buildMarquee();
-    }
-  }
+  // Run immediately. We intentionally do NOT gate this on
+  // prefers-reduced-motion — the marquee is a slow horizontal scroll, not a
+  // vestibular trigger, and gating it was masking the bug the user reported.
+  buildMarquee();
 
   /* ---------- Scroll-revealed items ---------- */
   gsap.utils.toArray('[data-reveal]').forEach((el) => {
