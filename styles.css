@@ -124,26 +124,32 @@ body {
   transition: width .12s linear;
 }
 
-/* ---------- Header / Nav ---------- */
+/* ---------- Header / Nav (resizes on scroll) ---------- */
 .site-header {
   position: sticky;
   top: 0;
   z-index: 100;
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
-  background: color-mix(in oklab, var(--bg) 78%, transparent);
+  background: color-mix(in oklab, var(--bg) 72%, transparent);
   border-bottom: 1px solid transparent;
-  transition: border-color .3s ease, background .3s ease;
+  transition: border-color .35s ease, background .35s ease, box-shadow .35s ease;
 }
-.site-header.is-scrolled { border-bottom-color: var(--border); }
+.site-header.is-scrolled {
+  border-bottom-color: var(--border);
+  background: color-mix(in oklab, var(--bg) 88%, transparent);
+  box-shadow: 0 8px 24px -16px rgba(0,0,0,.35);
+}
 
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 24px;
-  height: 72px;
+  height: 84px;
+  transition: height .35s cubic-bezier(.4,.2,.2,1);
 }
+.is-scrolled .nav { height: 60px; }
 
 .brand {
   display: inline-flex;
@@ -152,15 +158,24 @@ body {
   font-family: 'Space Grotesk', sans-serif;
   font-weight: 600;
   letter-spacing: -.01em;
-  font-size: 18px;
+  font-size: 19px;
+  transition: font-size .35s cubic-bezier(.4,.2,.2,1);
 }
+.is-scrolled .brand { font-size: 16px; gap: 8px; }
+
 .brand-mark {
   display: inline-grid; place-items: center;
-  width: 32px; height: 32px;
+  width: 36px; height: 36px;
   border: 1px solid var(--border-strong);
-  border-radius: 8px;
+  border-radius: 9px;
   background: var(--bg-elev);
+  transition: width .35s cubic-bezier(.4,.2,.2,1),
+              height .35s cubic-bezier(.4,.2,.2,1),
+              border-radius .35s ease;
 }
+.is-scrolled .brand-mark { width: 28px; height: 28px; border-radius: 7px; }
+.brand-mark svg { transition: width .35s ease, height .35s ease; }
+.is-scrolled .brand-mark svg { width: 22px; height: 22px; }
 
 .nav-links {
   display: flex; align-items: center; gap: 28px;
@@ -181,6 +196,9 @@ body {
 .nav-actions {
   display: flex; align-items: center; gap: 10px;
 }
+.is-scrolled .nav-links { font-size: 13px; gap: 22px; }
+.is-scrolled .btn { padding: 9px 14px; font-size: 13px; }
+.is-scrolled .btn-lg { padding: 10px 16px; font-size: 13px; }
 
 /* Theme toggle */
 .theme-toggle {
@@ -191,8 +209,11 @@ body {
   border-radius: 999px;
   background: var(--bg-elev);
   overflow: hidden;
-  transition: border-color .25s ease, background .25s ease, transform .25s ease;
+  transition: border-color .25s ease, background .25s ease, transform .25s ease,
+              width .35s cubic-bezier(.4,.2,.2,1), height .35s cubic-bezier(.4,.2,.2,1);
 }
+.is-scrolled .theme-toggle { width: 34px; height: 34px; }
+.is-scrolled .theme-toggle i { font-size: 14px; }
 .theme-toggle:hover { border-color: var(--text); transform: rotate(-12deg); }
 .theme-toggle i {
   position: absolute;
@@ -247,6 +268,41 @@ body {
   color: var(--text-muted);
 }
 .eyebrow .dot { width: 6px; height: 6px; background: var(--text); border-radius: 50%; }
+
+/* ---------- Claude Code icon ---------- */
+.claude-icon {
+  display: inline-block;
+  width: 24px; height: 24px;
+  object-fit: contain;
+  vertical-align: middle;
+  image-rendering: pixelated;
+  flex-shrink: 0;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+.claude-icon-xs { width: 18px; height: 18px; margin: -2px 4px 0 6px; }
+.claude-icon-sm { width: 26px; height: 26px; }
+.claude-icon-md { width: 36px; height: 36px; }
+.claude-icon-lg { width: 56px; height: 56px; }
+
+/* Spin (for icons travelling on the marquee wheel) */
+.claude-icon.spin { animation: claude-spin 7s linear infinite; transform-origin: center; }
+@keyframes claude-spin { to { transform: rotate(360deg); } }
+
+/* In light mode the icon's white background would clash; round it and give it a subtle plate. */
+.claude-icon-sm,
+.claude-icon-md,
+.claude-icon-lg {
+  background: var(--bg);
+  border: 1px solid var(--border-strong);
+  border-radius: 6px;
+  padding: 3px;
+}
+[data-theme="dark"] .claude-icon-sm,
+[data-theme="dark"] .claude-icon-md,
+[data-theme="dark"] .claude-icon-lg {
+  background: var(--bg-elev);
+}
 
 /* ---------- HERO ---------- */
 .hero {
@@ -423,36 +479,72 @@ body {
 .filetree.dense { font-size: 12px; }
 .filetree.dense .mute { color: var(--text-faint); margin-left: auto; }
 
-/* Marquee */
+/* Marquee — two-row infinite wheel (top: ltr, bottom: rtl) */
 .marquee {
   margin-top: 80px;
   border-block: 1px solid var(--border);
-  padding-block: 18px;
   overflow: hidden;
   position: relative;
 }
-.marquee::before,
-.marquee::after {
-  content: "";
-  position: absolute; top: 0; bottom: 0; width: 80px;
-  background: linear-gradient(to right, var(--bg), transparent);
-  z-index: 1; pointer-events: none;
-}
-.marquee::after { right: 0; left: auto; background: linear-gradient(to left, var(--bg), transparent); }
-.marquee-track {
-  display: inline-flex; gap: 32px;
+.marquee-row {
+  position: relative;
+  padding-block: 18px;
+  overflow: hidden;
   white-space: nowrap;
-  animation: scroll-x 30s linear infinite;
+}
+.marquee-row + .marquee-row { border-top: 1px solid var(--border); }
+.marquee-row::before,
+.marquee-row::after {
+  content: "";
+  position: absolute; top: 0; bottom: 0; width: 120px;
+  z-index: 2; pointer-events: none;
+}
+.marquee-row::before { left: 0; background: linear-gradient(to right, var(--bg) 0%, transparent 100%); }
+.marquee-row::after  { right: 0; background: linear-gradient(to left,  var(--bg) 0%, transparent 100%); }
+.section-alt .marquee-row::before { background: linear-gradient(to right, var(--bg-elev) 0%, transparent 100%); }
+.section-alt .marquee-row::after  { background: linear-gradient(to left,  var(--bg-elev) 0%, transparent 100%); }
+
+.marquee-track {
+  display: inline-flex;
+  align-items: center;
+  gap: 36px;
+  white-space: nowrap;
   font-family: 'Space Grotesk', sans-serif;
-  font-size: clamp(18px, 2vw, 28px);
+  font-size: clamp(20px, 2.2vw, 32px);
+  font-weight: 500;
   color: var(--text);
   letter-spacing: -.01em;
+  will-change: transform;
 }
-.marquee-track .sep { color: var(--text-faint); }
-@keyframes scroll-x {
+.marquee-track .sep { color: var(--text-faint); font-size: .7em; }
+
+/* Direction: TOP row moves left → right */
+.marquee-row[data-direction="ltr"] .marquee-track {
+  animation: marquee-ltr 38s linear infinite;
+}
+@keyframes marquee-ltr {
+  from { transform: translateX(-50%); }
+  to   { transform: translateX(0); }
+}
+
+/* BOTTOM row moves right → left (counter-rotating "wheel") */
+.marquee-row[data-direction="rtl"] .marquee-track {
+  animation: marquee-rtl 30s linear infinite;
+}
+@keyframes marquee-rtl {
   from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  to   { transform: translateX(-50%); }
 }
+
+/* Smaller bottom row — more wheel-spoke feel */
+.marquee-row-sm .marquee-track {
+  font-size: clamp(13px, 1.2vw, 17px);
+  font-weight: 400;
+  color: var(--text-muted);
+  gap: 28px;
+}
+.marquee-row-sm { padding-block: 14px; }
+.marquee-row:hover .marquee-track { animation-play-state: paused; }
 
 /* ---------- Section heads ---------- */
 .section-head {
@@ -590,9 +682,26 @@ body {
   padding: 32px;
   display: flex; flex-direction: column; gap: 16px;
   position: relative;
+  overflow: hidden;
   transition: transform .3s ease, border-color .25s ease;
 }
 .step:hover { transform: translateY(-4px); border-color: var(--border-strong); }
+
+/* Floating Claude glyph in the highlight step */
+.step-highlight { border-color: var(--border-strong); }
+.step-glyph {
+  position: absolute;
+  top: 20px; right: 20px;
+  width: 44px; height: 44px;
+  object-fit: contain;
+  image-rendering: pixelated;
+  opacity: .9;
+  filter: drop-shadow(0 6px 14px rgba(0,0,0,.25));
+  transition: transform .5s cubic-bezier(.2,.6,.2,1), opacity .25s ease;
+  user-select: none;
+}
+.step-highlight:hover .step-glyph { transform: rotate(-12deg) scale(1.08); opacity: 1; }
+.step strong { color: var(--text); font-weight: 600; }
 .step-head { display: flex; align-items: center; gap: 14px; }
 .step-no {
   font-family: 'Space Grotesk', sans-serif;
@@ -828,6 +937,26 @@ body {
     radial-gradient(circle at 20% 0%, color-mix(in oklab, var(--text) 6%, transparent), transparent 50%),
     radial-gradient(circle at 80% 100%, color-mix(in oklab, var(--text) 6%, transparent), transparent 50%);
   pointer-events: none;
+}
+
+/* Floating Claude glyphs in the CTA */
+.cta-glyph {
+  position: absolute;
+  width: clamp(64px, 8vw, 110px);
+  height: auto;
+  object-fit: contain;
+  image-rendering: pixelated;
+  opacity: .14;
+  pointer-events: none;
+  user-select: none;
+  filter: grayscale(1);
+}
+[data-theme="dark"] .cta-glyph { opacity: .18; filter: none; }
+.cta-glyph-tl { top: 8%; left: 6%; transform: rotate(-14deg); }
+.cta-glyph-br { bottom: 8%; right: 6%; transform: rotate(12deg); }
+@media (max-width: 640px) {
+  .cta-glyph-tl { top: 4%; left: 4%; width: 56px; }
+  .cta-glyph-br { bottom: 4%; right: 4%; width: 56px; }
 }
 .cta-card h2 {
   font-family: 'Space Grotesk', sans-serif;

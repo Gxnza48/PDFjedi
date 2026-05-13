@@ -73,7 +73,9 @@
           <div class="hero-text">
             <span class="eyebrow" data-reveal>
               <span class="dot"></span>
-              AI Skill System · for Claude Code
+              AI Skill System · for
+              <img class="claude-icon claude-icon-xs" src="assets/claudecode.png" alt="" aria-hidden="true" />
+              Claude Code
             </span>
 
             <h1 class="hero-title">
@@ -146,25 +148,56 @@
           </aside>
         </div>
 
-        <!-- Marquee -->
+        <!-- Marquee: two-row infinite wheel -->
         <div class="marquee" aria-hidden="true">
-          <div class="marquee-track">
-            <span>Tech specifications</span><span class="sep">●</span>
-            <span>UX/UI systems</span><span class="sep">●</span>
-            <span>Contracts</span><span class="sep">●</span>
-            <span>Budgets</span><span class="sep">●</span>
-            <span>Roadmaps</span><span class="sep">●</span>
-            <span>Security architecture</span><span class="sep">●</span>
-            <span>Open questions</span><span class="sep">●</span>
-            <span>Proposals</span><span class="sep">●</span>
-            <span>Tech specifications</span><span class="sep">●</span>
-            <span>UX/UI systems</span><span class="sep">●</span>
-            <span>Contracts</span><span class="sep">●</span>
-            <span>Budgets</span><span class="sep">●</span>
-            <span>Roadmaps</span><span class="sep">●</span>
-            <span>Security architecture</span><span class="sep">●</span>
-            <span>Open questions</span><span class="sep">●</span>
-            <span>Proposals</span><span class="sep">●</span>
+          <div class="marquee-row" data-direction="ltr">
+            <div class="marquee-track">
+              <span>Tech specifications</span><span class="sep">●</span>
+              <span>UX/UI systems</span><span class="sep">●</span>
+              <span>Contracts</span><span class="sep">●</span>
+              <span>Budgets</span><span class="sep">●</span>
+              <span>Roadmaps</span><span class="sep">●</span>
+              <span>Security architecture</span><span class="sep">●</span>
+              <span>Open questions</span><span class="sep">●</span>
+              <span>Proposals</span><span class="sep">●</span>
+              <!-- duplicate -->
+              <span>Tech specifications</span><span class="sep">●</span>
+              <span>UX/UI systems</span><span class="sep">●</span>
+              <span>Contracts</span><span class="sep">●</span>
+              <span>Budgets</span><span class="sep">●</span>
+              <span>Roadmaps</span><span class="sep">●</span>
+              <span>Security architecture</span><span class="sep">●</span>
+              <span>Open questions</span><span class="sep">●</span>
+              <span>Proposals</span><span class="sep">●</span>
+            </div>
+          </div>
+
+          <div class="marquee-row marquee-row-sm" data-direction="rtl">
+            <div class="marquee-track">
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Powered by Claude Code</span><span class="sep">●</span>
+              <span>Master prompt</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Skills</span><span class="sep">●</span>
+              <span>Templates</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Citation-grounded</span><span class="sep">●</span>
+              <span>No invention</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Round-trip tested</span><span class="sep">●</span>
+              <!-- duplicate -->
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Powered by Claude Code</span><span class="sep">●</span>
+              <span>Master prompt</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Skills</span><span class="sep">●</span>
+              <span>Templates</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Citation-grounded</span><span class="sep">●</span>
+              <span>No invention</span><span class="sep">●</span>
+              <img class="claude-icon claude-icon-sm spin" src="assets/claudecode.png" alt="" />
+              <span>Round-trip tested</span><span class="sep">●</span>
+            </div>
           </div>
         </div>
       </section>
@@ -308,12 +341,13 @@
 <span class="c-mute">$</span> claude</code></pre>
             </li>
 
-            <li class="step" data-reveal>
+            <li class="step step-highlight" data-reveal>
+              <img class="step-glyph" src="assets/claudecode.png" alt="" aria-hidden="true" />
               <div class="step-head">
                 <span class="step-no">02</span>
                 <h3>Load the framework</h3>
               </div>
-              <p>Tell Claude to load the master prompt, every skill, and every template. From here on it is PDFJedi.</p>
+              <p>Tell <strong>Claude Code</strong> to load the master prompt, every skill, and every template. From here on it is PDFJedi.</p>
               <pre class="code"><code><span class="c-mute"># Load:</span>
 /prompts/master-prompt.md
 /skills/*
@@ -521,6 +555,8 @@
       <section class="cta">
         <div class="container">
           <div class="cta-card" data-reveal>
+            <img class="cta-glyph cta-glyph-tl" src="assets/claudecode.png" alt="" aria-hidden="true" />
+            <img class="cta-glyph cta-glyph-br" src="assets/claudecode.png" alt="" aria-hidden="true" />
             <h2>Ready to skip the discovery&nbsp;grind?</h2>
             <p>Clone PDFjedi, drop a real brief into Claude Code, and ship a signable bundle by Friday.</p>
             <div class="cta-actions">
