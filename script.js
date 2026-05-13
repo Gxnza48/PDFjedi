@@ -67,15 +67,18 @@
 
   /* ---------- Lenis smooth scroll ---------- */
   // RAF loop is wired up via GSAP ticker below (after gsap is confirmed loaded),
-  // so we don't double-pump Lenis here.
+  // so we don't double-pump Lenis here. Runs unconditionally — Lenis is gentle
+  // enough that gating it on prefers-reduced-motion was overkill and was
+  // hiding the smooth scroll for users with that OS preference enabled.
   let lenis = null;
-  if (!prefersReduced && typeof Lenis !== 'undefined') {
+  if (typeof Lenis !== 'undefined') {
     lenis = new Lenis({
-      duration: 1.15,
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      lerp: prefersReduced ? 0.2 : 0.1,   // snappier when reduced-motion is on
       smoothWheel: true,
       smoothTouch: false,
-      lerp: 0.085,
+      wheelMultiplier: 1,
+      touchMultiplier: 1.5,
+      syncTouch: false,
     });
 
     // Anchor links → lenis scroll

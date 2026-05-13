@@ -71,6 +71,36 @@ body {
 
 ::selection { background: var(--accent); color: var(--accent-contrast); }
 
+/* ---------- Scrollbar (pure B&W, inverts with theme) ---------- */
+/* Firefox + modern Chromium */
+html {
+  scrollbar-width: thin;
+  scrollbar-color: var(--text) var(--bg-elev);
+  scroll-behavior: auto; /* Lenis owns the smooth scroll; native behaviour stays instant */
+}
+
+/* WebKit / Blink — full control */
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track {
+  background: var(--bg-elev);
+  border-left: 1px solid var(--border);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--text);
+  border: 3px solid var(--bg-elev); /* creates a padded-pill look */
+  border-radius: 999px;
+  background-clip: padding-box;
+  transition: background-color .2s ease;
+}
+::-webkit-scrollbar-thumb:hover { background-color: var(--text-muted); }
+::-webkit-scrollbar-thumb:active { background-color: var(--text); }
+::-webkit-scrollbar-corner { background: var(--bg-elev); }
+
+/* Lenis adds these classes to <html> when active — keep the cursor reflecting
+   the smoothed scroll state, but never disable selection. */
+html.lenis-stopped { overflow: hidden; }
+html.lenis-smooth { scroll-behavior: auto; }
+
 /* ---------- Containers / layout ---------- */
 .container {
   width: 100%;
