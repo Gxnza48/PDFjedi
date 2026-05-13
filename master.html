@@ -1,0 +1,1687 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <title>PDFjedi — Master document</title>
+    <meta name="description" content="PDFjedi master document: complete reference for the modular AI skill system that turns PDFs into production-ready digital projects." />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+
+    <style>
+      /* ============================================================
+         Master document — print-styled, B&W
+         Designed to match the landing page (styles.css).
+         Targets A4. Use Chrome's "Print → Save as PDF" or generate
+         via `chrome --headless --print-to-pdf=master.pdf master.html`.
+         ============================================================ */
+
+      :root {
+        --ink:        #0a0a0a;
+        --ink-muted:  #4a4a4a;
+        --ink-faint:  #8a8a8a;
+        --paper:      #ffffff;
+        --paper-elev: #f7f7f7;
+        --paper-card: #fbfbfb;
+        --hair:       #d8d8d8;
+        --hair-soft:  #ececec;
+      }
+
+      @page {
+        size: A4;
+        margin: 18mm 16mm 20mm 16mm;
+      }
+      @page :first {
+        margin: 0;
+      }
+
+      *, *::before, *::after { box-sizing: border-box; }
+      html, body, h1, h2, h3, h4, h5, p, ul, ol, figure, pre, code { margin: 0; padding: 0; }
+      ul, ol { list-style: none; }
+      img, svg { display: block; max-width: 100%; }
+      a { color: inherit; text-decoration: none; }
+
+      html {
+        font-size: 10pt;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+      }
+      body {
+        font-family: 'Inter', system-ui, sans-serif;
+        color: var(--ink);
+        background: var(--paper);
+        line-height: 1.55;
+        widows: 3;
+        orphans: 3;
+      }
+
+      /* ---------- Typography ---------- */
+      h1, h2, h3, h4 {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        letter-spacing: -.015em;
+        line-height: 1.1;
+      }
+      em.serif {
+        font-family: 'Instrument Serif', serif;
+        font-style: italic;
+        font-weight: 400;
+      }
+      code, pre, kbd {
+        font-family: 'JetBrains Mono', monospace;
+      }
+      p { margin-block: 0.4em; }
+      p + p { margin-top: 0.6em; }
+      strong { font-weight: 600; }
+
+      /* ---------- Section page ---------- */
+      .page {
+        break-after: page;
+        page-break-after: always;
+      }
+      .page:last-of-type { break-after: auto; page-break-after: auto; }
+
+      .eyebrow {
+        display: inline-flex; align-items: center; gap: 8px;
+        padding: 4px 10px;
+        border: 1px solid var(--hair);
+        border-radius: 999px;
+        font-size: 8.5pt;
+        letter-spacing: .08em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        background: var(--paper-elev);
+      }
+      .eyebrow .dot { width: 5px; height: 5px; background: var(--ink); border-radius: 50%; }
+
+      .section-no {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 11pt;
+        letter-spacing: .12em;
+        color: var(--ink-faint);
+      }
+      .section-title {
+        font-size: 32pt;
+        line-height: 1.04;
+        margin-top: 8pt;
+        max-width: 24ch;
+      }
+      .section-title em.serif { font-size: 1.02em; }
+      .section-lede {
+        font-size: 12.5pt;
+        line-height: 1.5;
+        color: var(--ink-muted);
+        max-width: 65ch;
+        margin-top: 14pt;
+      }
+      .section-head {
+        padding-top: 4mm;
+        padding-bottom: 12mm;
+        border-bottom: 1px solid var(--hair);
+        margin-bottom: 10mm;
+      }
+      .section-head .eyebrow { margin-bottom: 14pt; }
+
+      /* ---------- Cover (full bleed, first page only) ---------- */
+      .cover {
+        height: 297mm;
+        width: 210mm;
+        padding: 24mm 22mm;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background: var(--paper);
+        position: relative;
+        break-after: page;
+        page-break-after: always;
+        overflow: hidden;
+      }
+      .cover::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(to right, var(--hair-soft) 1px, transparent 1px),
+          linear-gradient(to bottom, var(--hair-soft) 1px, transparent 1px);
+        background-size: 18mm 18mm;
+        opacity: .8;
+        z-index: 0;
+        mask-image: radial-gradient(ellipse at center, #000 0%, transparent 78%);
+        -webkit-mask-image: radial-gradient(ellipse at center, #000 0%, transparent 78%);
+      }
+      .cover > * { position: relative; z-index: 1; }
+
+      .cover-top {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .cover-brand {
+        display: inline-flex; align-items: center; gap: 10px;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 13pt;
+      }
+      .cover-brand-mark {
+        width: 28px; height: 28px;
+        display: inline-grid; place-items: center;
+        border: 1px solid var(--ink); border-radius: 6px;
+      }
+      .cover-meta {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9pt;
+        color: var(--ink-muted);
+        text-align: right;
+        line-height: 1.6;
+      }
+
+      .cover-center {
+        display: flex; flex-direction: column; gap: 18pt;
+      }
+      .cover-eyebrow {
+        font-size: 10pt;
+        letter-spacing: .14em;
+        text-transform: uppercase;
+        color: var(--ink-muted);
+        display: inline-flex; align-items: center; gap: 10px;
+      }
+      .cover-eyebrow::before,
+      .cover-eyebrow::after {
+        content: "";
+        height: 1px;
+        width: 28px;
+        background: var(--ink-faint);
+      }
+      .cover-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 92pt;
+        line-height: 0.92;
+        letter-spacing: -.04em;
+      }
+      .cover-subtitle {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 400;
+        font-size: 20pt;
+        line-height: 1.2;
+        color: var(--ink);
+        max-width: 22ch;
+      }
+      .cover-tagline {
+        font-family: 'Instrument Serif', serif;
+        font-style: italic;
+        font-size: 22pt;
+        line-height: 1.2;
+        color: var(--ink-muted);
+        max-width: 30ch;
+      }
+
+      .cover-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        gap: 20pt;
+        padding-top: 16pt;
+        border-top: 1px solid var(--ink);
+        font-size: 9.5pt;
+      }
+      .cover-bottom dt {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8pt;
+        text-transform: uppercase;
+        letter-spacing: .1em;
+        color: var(--ink-faint);
+        margin-bottom: 4pt;
+      }
+      .cover-bottom dd { color: var(--ink); }
+
+      /* ---------- Layout helpers ---------- */
+      .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8mm; }
+      .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6mm; }
+      .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 5mm; }
+
+      /* ---------- Cards / callouts ---------- */
+      .card {
+        background: var(--paper-card);
+        border: 1px solid var(--hair);
+        border-radius: 8px;
+        padding: 5mm 5mm;
+        break-inside: avoid;
+      }
+      .card h3 {
+        font-size: 12.5pt;
+        margin-bottom: 4pt;
+      }
+      .card p { font-size: 9.5pt; color: var(--ink-muted); }
+      .card .tag {
+        display: inline-block;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 7.5pt;
+        letter-spacing: .06em;
+        text-transform: uppercase;
+        color: var(--ink-faint);
+        margin-bottom: 4pt;
+      }
+      .card-row {
+        display: flex; align-items: center; gap: 8pt;
+        margin-bottom: 6pt;
+      }
+      .card-row i {
+        width: 22pt; height: 22pt;
+        display: inline-grid; place-items: center;
+        border: 1px solid var(--hair);
+        border-radius: 5px;
+        font-size: 11pt;
+      }
+
+      .callout {
+        border-left: 3px solid var(--ink);
+        background: var(--paper-elev);
+        padding: 4mm 5mm;
+        font-size: 10pt;
+        color: var(--ink);
+        border-radius: 0 6px 6px 0;
+        margin-block: 5mm;
+        break-inside: avoid;
+      }
+      .callout strong {
+        font-family: 'Space Grotesk', sans-serif;
+        display: block;
+        margin-bottom: 2pt;
+      }
+
+      /* ---------- Body content ---------- */
+      .body p { font-size: 10pt; max-width: 75ch; }
+      .body h3 {
+        font-size: 16pt;
+        margin-top: 10mm;
+        margin-bottom: 3mm;
+      }
+      .body h3 em.serif { font-size: 1.02em; }
+      .body h4 {
+        font-size: 12pt;
+        margin-top: 7mm;
+        margin-bottom: 2mm;
+      }
+
+      .lead {
+        font-size: 12pt;
+        line-height: 1.5;
+        color: var(--ink);
+        max-width: 70ch;
+      }
+      .lead em.serif { font-size: 1.05em; }
+
+      .meta-row {
+        display: flex; gap: 12pt; flex-wrap: wrap;
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8.5pt;
+        color: var(--ink-faint);
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        margin-bottom: 4mm;
+      }
+      .meta-row span { display: inline-flex; align-items: center; gap: 4pt; }
+
+      .body ul.bullets,
+      .body ol.steps {
+        margin-top: 3mm;
+        display: flex; flex-direction: column; gap: 1.5mm;
+        font-size: 10pt;
+      }
+      .body ul.bullets li {
+        padding-left: 12pt;
+        position: relative;
+        max-width: 78ch;
+      }
+      .body ul.bullets li::before {
+        content: "";
+        width: 4pt; height: 4pt;
+        background: var(--ink);
+        position: absolute; left: 0; top: 5pt;
+        border-radius: 1px;
+      }
+      .body ol.steps {
+        counter-reset: step;
+        gap: 4mm;
+      }
+      .body ol.steps li {
+        counter-increment: step;
+        padding-left: 24pt;
+        position: relative;
+        max-width: 78ch;
+      }
+      .body ol.steps li::before {
+        content: counter(step, decimal-leading-zero);
+        position: absolute; left: 0; top: 0;
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500;
+        color: var(--ink-faint);
+        font-size: 9.5pt;
+      }
+
+      /* ---------- Tables ---------- */
+      table.data {
+        width: 100%;
+        border-collapse: collapse;
+        font-size: 9.5pt;
+        margin-block: 4mm;
+        break-inside: avoid;
+      }
+      table.data th, table.data td {
+        text-align: left;
+        padding: 6pt 8pt;
+        border-bottom: 1px solid var(--hair);
+        vertical-align: top;
+      }
+      table.data thead th {
+        font-family: 'JetBrains Mono', monospace;
+        font-weight: 500;
+        font-size: 8pt;
+        text-transform: uppercase;
+        letter-spacing: .06em;
+        color: var(--ink-faint);
+        border-bottom: 1px solid var(--ink);
+      }
+      table.data tbody tr:last-child td { border-bottom: 0; }
+
+      /* ---------- Code blocks ---------- */
+      pre.code {
+        background: var(--paper-elev);
+        border: 1px solid var(--hair);
+        border-radius: 6px;
+        padding: 4mm 5mm;
+        font-size: 9pt;
+        line-height: 1.55;
+        color: var(--ink);
+        margin-block: 4mm;
+        break-inside: avoid;
+        white-space: pre-wrap;
+        word-break: keep-all;
+      }
+      pre.code .mute { color: var(--ink-faint); }
+      pre.code em.serif {
+        font-style: italic;
+        font-size: 11pt;
+        color: var(--ink);
+      }
+
+      code.inline {
+        font-size: 9.2pt;
+        padding: 1pt 4pt;
+        background: var(--paper-elev);
+        border: 1px solid var(--hair);
+        border-radius: 4px;
+      }
+
+      /* ---------- Architecture diagram (ASCII-style boxes) ---------- */
+      .arch {
+        display: flex;
+        flex-direction: column;
+        gap: 3mm;
+        margin-top: 5mm;
+      }
+      .arch-layer {
+        border: 1px solid var(--hair);
+        border-radius: 6px;
+        padding: 4mm 5mm;
+        background: var(--paper-card);
+        break-inside: avoid;
+      }
+      .arch-layer-no {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 11pt;
+        color: var(--ink-faint);
+        margin-bottom: 1mm;
+      }
+      .arch-layer h3 { font-size: 13pt; margin-bottom: 2pt; }
+      .arch-layer p { font-size: 9.5pt; color: var(--ink-muted); }
+
+      /* ---------- Skill profile (per-skill page) ---------- */
+      .skill-profile {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 8mm;
+        align-items: start;
+      }
+      .skill-profile h3 {
+        font-size: 11pt;
+        margin-bottom: 2mm;
+        font-family: 'Space Grotesk', sans-serif;
+      }
+      .skill-profile p { font-size: 9.5pt; }
+      .skill-icon {
+        width: 38pt; height: 38pt;
+        display: inline-grid; place-items: center;
+        border: 1px solid var(--ink);
+        border-radius: 8px;
+        font-size: 18pt;
+        margin-bottom: 5mm;
+      }
+      .skill-meta {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8.5pt;
+        color: var(--ink-faint);
+      }
+
+      /* ---------- Tree / inventory ---------- */
+      .filetree {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9pt;
+        line-height: 1.7;
+        padding: 4mm 5mm;
+        background: var(--paper-elev);
+        border: 1px solid var(--hair);
+        border-radius: 6px;
+        break-inside: avoid;
+      }
+      .filetree .mute { color: var(--ink-faint); }
+      .filetree .indent { display: inline-block; width: 12pt; }
+
+      /* ---------- TOC ---------- */
+      .toc {
+        margin-top: 12mm;
+        display: flex;
+        flex-direction: column;
+      }
+      .toc-row {
+        display: grid;
+        grid-template-columns: 36pt 1fr auto;
+        align-items: baseline;
+        gap: 16pt;
+        padding: 9pt 0;
+        border-bottom: 1px solid var(--hair-soft);
+        font-size: 11pt;
+      }
+      .toc-row:last-child { border-bottom: 0; }
+      .toc-no {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500;
+        color: var(--ink-faint);
+        font-size: 10pt;
+      }
+      .toc-title {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 500;
+        font-size: 14pt;
+      }
+      .toc-title em.serif { font-size: 1.04em; }
+      .toc-title small {
+        display: block;
+        font-family: 'Inter', sans-serif;
+        font-weight: 400;
+        font-size: 9.5pt;
+        color: var(--ink-muted);
+        margin-top: 2pt;
+      }
+      .toc-page {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 9.5pt;
+        color: var(--ink-faint);
+      }
+
+      /* ---------- Stat row ---------- */
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 6mm;
+        margin-block: 6mm;
+        padding: 5mm 0;
+        border-top: 1px solid var(--hair);
+        border-bottom: 1px solid var(--hair);
+      }
+      .stats div { display: flex; flex-direction: column; gap: 2pt; }
+      .stats strong {
+        font-family: 'Space Grotesk', sans-serif;
+        font-weight: 600;
+        font-size: 24pt;
+        line-height: 1;
+      }
+      .stats span {
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 7.5pt;
+        text-transform: uppercase;
+        letter-spacing: .08em;
+        color: var(--ink-faint);
+      }
+
+      /* ---------- Footer line on each section ---------- */
+      .page-foot {
+        margin-top: 12mm;
+        padding-top: 4mm;
+        border-top: 1px solid var(--hair);
+        font-family: 'JetBrains Mono', monospace;
+        font-size: 8pt;
+        color: var(--ink-faint);
+        display: flex;
+        justify-content: space-between;
+      }
+
+      /* ---------- Claude icon ---------- */
+      .claude-icon {
+        display: inline-block;
+        width: 12pt; height: 12pt;
+        vertical-align: -2pt;
+        image-rendering: pixelated;
+      }
+
+      /* ---------- Misc ---------- */
+      hr.rule {
+        border: 0;
+        border-top: 1px solid var(--hair);
+        margin-block: 6mm;
+      }
+      .small { font-size: 9pt; color: var(--ink-muted); }
+      .muted { color: var(--ink-muted); }
+      .mono { font-family: 'JetBrains Mono', monospace; font-size: 9pt; }
+    </style>
+  </head>
+
+  <body>
+
+    <!-- ================ COVER ================ -->
+    <section class="cover">
+      <div class="cover-top">
+        <div class="cover-brand">
+          <span class="cover-brand-mark">
+            <svg width="20" height="20" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M9 11h10M9 14h10M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span>PDFjedi</span>
+        </div>
+        <div class="cover-meta">
+          MASTER DOCUMENT · v1.0<br/>
+          2026-05-13
+        </div>
+      </div>
+
+      <div class="cover-center">
+        <div class="cover-eyebrow">AI Skill System &nbsp;·&nbsp; for Claude Code</div>
+        <h1 class="cover-title">PDFjedi</h1>
+        <p class="cover-subtitle">A reusable framework for turning source PDFs into <em class="serif">complete</em> digital projects.</p>
+        <p class="cover-tagline">Tech specs, UX/UI systems, contracts, budgets, and roadmaps — citation-grounded, production-ready, no invention.</p>
+      </div>
+
+      <dl class="cover-bottom">
+        <div>
+          <dt>Repository</dt>
+          <dd>github.com/Gxnza48/PDFjedi</dd>
+        </div>
+        <div>
+          <dt>License</dt>
+          <dd>MIT</dd>
+        </div>
+        <div>
+          <dt>Maintainer</dt>
+          <dd>Gxnza48</dd>
+        </div>
+      </dl>
+    </section>
+
+    <!-- ================ TOC ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">CONTENTS</div>
+        <h1 class="section-title">What's in this <em class="serif">document</em></h1>
+        <p class="section-lede">Eleven chapters covering the full PDFjedi system: what it produces, how it composes, how to drive it, and a worked example you can audit end-to-end.</p>
+      </header>
+
+      <div class="toc">
+        <div class="toc-row">
+          <span class="toc-no">01</span>
+          <div class="toc-title">Introduction <small>What PDFjedi is, why it exists, and who it's for</small></div>
+          <span class="toc-page">→ 03</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">02</span>
+          <div class="toc-title">The output bundle <small>The nine artifacts produced by a full pipeline run</small></div>
+          <span class="toc-page">→ 04</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">03</span>
+          <div class="toc-title">Architecture <small>Three layers: master prompt, skills, templates</small></div>
+          <span class="toc-page">→ 06</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">04</span>
+          <div class="toc-title">The skills <small>Six composable modules — one role, one job each</small></div>
+          <span class="toc-page">→ 07</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">05</span>
+          <div class="toc-title">The templates <small>Structural contracts for each output artifact</small></div>
+          <span class="toc-page">→ 13</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">06</span>
+          <div class="toc-title">How to use <small>From clone to a signable bundle, step by step</small></div>
+          <span class="toc-page">→ 14</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">07</span>
+          <div class="toc-title">Workflow <small>The pipeline diagram and the dependencies it implies</small></div>
+          <span class="toc-page">→ 16</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">08</span>
+          <div class="toc-title">Example: Northbeam Coffee <small>A synthetic case study you can audit end-to-end</small></div>
+          <span class="toc-page">→ 17</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">09</span>
+          <div class="toc-title">Quality rules <small>The reasoning the master prompt enforces on every artifact</small></div>
+          <span class="toc-page">→ 19</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">10</span>
+          <div class="toc-title">Extending PDFjedi <small>Adding skills, templates, locales, and voices</small></div>
+          <span class="toc-page">→ 20</span>
+        </div>
+        <div class="toc-row">
+          <span class="toc-no">11</span>
+          <div class="toc-title">Credits &amp; license <small>Author, libraries, license terms</small></div>
+          <span class="toc-page">→ 21</span>
+        </div>
+      </div>
+
+      <div class="page-foot">
+        <span>PDFjedi · Master document</span>
+        <span>github.com/Gxnza48/PDFjedi</span>
+      </div>
+    </section>
+
+    <!-- ================ 01 · INTRODUCTION ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">01 · INTRODUCTION</div>
+        <h1 class="section-title">The most under-tooled step in client work, <em class="serif">turned into a framework.</em></h1>
+        <p class="section-lede">Reading a PDF and turning it into a project is the messiest step in real client delivery. The information is unstructured, contradictory, partly out of date, and almost never maps cleanly onto how an engineering team needs to receive it. PDFjedi treats that gap as the actual product surface.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>What PDFjedi <em class="serif">is</em></h3>
+        <p>PDFjedi is a modular AI skill system for Claude Code. It is a curated set of prompts, skills, and templates that compose together to convert messy real-world PDFs — briefs, RFPs, decks, research, meeting notes, compliance docs — into production-ready artifacts a team can execute on.</p>
+        <p>It is not a single prompt. It is a framework. Skills and templates can be loaded in part or in whole. You can run the entire pipeline (PDF in, full bundle out) or invoke a single skill (e.g. "rebuild only the budget after the client changed scope").</p>
+
+        <h3>Why it <em class="serif">exists</em></h3>
+        <p>Most AI tools that touch PDFs stop at a summary. A summary isn't a project. The team still has to translate it into requirements, then into a tech spec, then into a budget, then into a contract — losing fidelity at every hop. PDFjedi collapses those hops into one pipeline whose outputs are the artifacts the team would have built anyway, with every claim cited back to the source document.</p>
+
+        <h3>Who it's <em class="serif">for</em></h3>
+        <ul class="bullets">
+          <li><strong>Agencies and freelancers</strong> turning client briefs into proposals and statements of work.</li>
+          <li><strong>Product teams</strong> ingesting RFPs, vendor docs, or compliance PDFs.</li>
+          <li><strong>Solo founders</strong> converting investor decks or research PDFs into buildable plans.</li>
+          <li><strong>Consultants</strong> standardising how discovery documents become engagements.</li>
+        </ul>
+
+        <h3>Design <em class="serif">principles</em></h3>
+        <ol class="steps">
+          <li><strong>No invention.</strong> If the PDF doesn't say it, PDFjedi doesn't claim it. Gaps go into an open-questions register, not into the artifacts.</li>
+          <li><strong>One skill, one job.</strong> Skills are composable. A skill never silently triggers another — the master prompt orchestrates.</li>
+          <li><strong>Templates are contracts.</strong> The output schema is fixed so downstream tooling can parse it and reviewers know where to look.</li>
+          <li><strong>Reasoning is visible.</strong> Every artifact ends with a short "How this was derived" footer that lists which source sections drove which decisions.</li>
+          <li><strong>Senior-engineer voice.</strong> Outputs read the way a senior engineer would write them — direct, decision-oriented, no filler.</li>
+        </ol>
+
+        <div class="stats">
+          <div><strong>9</strong><span>artifacts</span></div>
+          <div><strong>6</strong><span>skills</span></div>
+          <div><strong>4</strong><span>templates</span></div>
+          <div><strong>1</strong><span>pipeline · no install</span></div>
+        </div>
+
+      </div>
+
+      <div class="page-foot">
+        <span>01 · Introduction</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 02 · THE OUTPUT BUNDLE ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">02 · THE OUTPUT BUNDLE</div>
+        <h1 class="section-title">Nine artifacts. One folder. <em class="serif">Monday-morning</em> ready.</h1>
+        <p class="section-lede">A full pipeline run emits one Markdown file per artifact into an <code class="inline">output/</code> folder. The two-digit prefixes are load-bearing — they encode the dependency order between steps.</p>
+      </header>
+
+      <div class="body">
+
+        <div class="filetree">
+output/<br/>
+<span class="indent"></span>├── 01-requirements.md<br/>
+<span class="indent"></span>├── 02-tech-spec.md<br/>
+<span class="indent"></span>├── 03-ux-ui-system.md<br/>
+<span class="indent"></span>├── 04-security-architecture.md<br/>
+<span class="indent"></span>├── 05-roadmap.md<br/>
+<span class="indent"></span>├── 06-budget.md<br/>
+<span class="indent"></span>├── 07-proposal.md<br/>
+<span class="indent"></span>├── 08-contract.md<br/>
+<span class="indent"></span>└── 99-open-questions.md
+        </div>
+
+        <h3 style="margin-top: 8mm;">What's in each <em class="serif">file</em></h3>
+
+        <div class="grid-2" style="margin-top: 4mm;">
+          <div class="card">
+            <span class="tag">01 · Requirements</span>
+            <h3>Normalised requirements</h3>
+            <p>Atomic claims extracted from every source PDF, deduplicated, normalised with stable REQ-IDs, MoSCoW-prioritised, and individually cited. Surfaces contradictions and gaps as separate tables.</p>
+          </div>
+          <div class="card">
+            <span class="tag">02 · Tech spec</span>
+            <h3>Technical specification</h3>
+            <p>Architecture, modules, data model, API surface, NFRs, operations. Every module references the REQ-IDs it satisfies; every REQ-ID is implemented or explicitly deferred.</p>
+          </div>
+          <div class="card">
+            <span class="tag">03 · UX/UI</span>
+            <h3>UX/UI system</h3>
+            <p>Screen inventory, component library, interaction flows, accessibility rules. Refuses to invent brand decisions — emits semantic tokens when none are supplied.</p>
+          </div>
+          <div class="card">
+            <span class="tag">04 · Security</span>
+            <h3>Security architecture</h3>
+            <p>STRIDE threat model, data classification, identity &amp; access, application and infrastructure controls, compliance mapping, incident response, launch-readiness checklist.</p>
+          </div>
+          <div class="card">
+            <span class="tag">05 · Roadmap</span>
+            <h3>Roadmap &amp; milestones</h3>
+            <p>Phases, parallel workstreams, dependencies, critical path. Cross-checked against the budget's PERT estimates so duration × team-size matches person-days.</p>
+          </div>
+          <div class="card">
+            <span class="tag">06 · Budget</span>
+            <h3>Defensible budget</h3>
+            <p>PERT-estimated line items, role mix, project management, QA, risk reserve, taxes, optional add-ons, out-of-scope. Refuses to invent rates.</p>
+          </div>
+          <div class="card">
+            <span class="tag">07 · Proposal</span>
+            <h3>Client-facing proposal</h3>
+            <p>Plain-language deliverables, roadmap at a glance, team, investment, assumptions, next step. Written for a non-engineer decision-maker.</p>
+          </div>
+          <div class="card">
+            <span class="tag">08 · Contract</span>
+            <h3>Signature-ready contract</h3>
+            <p>Jurisdiction-aware MSA. Deliverables mirror the proposal one-to-one. Standard clauses plus the locale-specific adjustments (IVA, GDPR, governing law). Lawyer review still required.</p>
+          </div>
+          <div class="card" style="grid-column: span 2;">
+            <span class="tag">99 · Open questions</span>
+            <h3>Open-questions register</h3>
+            <p>Every gap, contradiction, and ambiguity surfaced as an explicit question rather than an invention. The register is non-empty by design — a zero count means the model hallucinated. Top three blocking items are flagged separately so the client knows what to answer first.</p>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="page-foot">
+        <span>02 · The output bundle</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 03 · ARCHITECTURE ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">03 · ARCHITECTURE</div>
+        <h1 class="section-title">Three layers. Plain text. <em class="serif">No runtime.</em></h1>
+        <p class="section-lede">PDFjedi is prompts and contracts, not code. There is no executor, no daemon, no build step. The system is three layers of plain-text files that Claude Code loads into its working context.</p>
+      </header>
+
+      <div class="body">
+
+        <div class="arch">
+          <div class="arch-layer">
+            <div class="arch-layer-no">L1</div>
+            <h3>Master prompt</h3>
+            <p class="muted mono small">/prompts/master-prompt.md</p>
+            <p style="margin-top: 2mm;">Defines the PDFJedi role, the operating contract (grounding, no-invention, templates-as-contract, reasoning-visible), the pipeline order, the reasoning rules for ambiguous source material, and the quality gates every artifact must pass before emission. Always loaded first; always in effect.</p>
+          </div>
+
+          <div class="arch-layer">
+            <div class="arch-layer-no">L2</div>
+            <h3>Skills (modular)</h3>
+            <p class="muted mono small">/skills/*.md</p>
+            <p style="margin-top: 2mm;">Each skill is one role, with strict inputs, a numbered process, an output schema, and a set of quality checks. Skills don't invoke each other — composition happens at the master-prompt layer. New skills slot in by following the same file structure.</p>
+          </div>
+
+          <div class="arch-layer">
+            <div class="arch-layer-no">L3</div>
+            <h3>Templates (structural contracts)</h3>
+            <p class="muted mono small">/templates/*.md</p>
+            <p style="margin-top: 2mm;">Define the exact section structure of every output artifact: ordered numbered sections, fixed table column headers, bracketed placeholders for fields the skill will fill, and the "How this was derived" footer. Templates contain no instructions — that lives in skills.</p>
+          </div>
+        </div>
+
+        <h3 style="margin-top: 8mm;">Why three <em class="serif">layers</em></h3>
+        <p>Concerns are separated so each layer can change independently:</p>
+        <ul class="bullets">
+          <li><strong>Master prompt</strong> changes when the philosophy of PDFjedi changes (rules, voice, what's never done). Rare.</li>
+          <li><strong>Skills</strong> change when a process changes (how to extract requirements, how to estimate a budget). Occasional.</li>
+          <li><strong>Templates</strong> change when an output schema changes (a new section in the contract, a new field in the budget). Frequent — driven by client feedback.</li>
+        </ul>
+        <p>Keeping templates separate from skills means you can rebrand or relocalise PDFjedi by editing only templates. The skills still work. Adding a new artifact type means dropping a skill plus a template, then adding one line to the master prompt's pipeline table. No code changes anywhere.</p>
+
+        <div class="callout">
+          <strong>Why no code?</strong>
+          PDFjedi could be implemented as a CLI tool that parses PDFs and calls an LLM. That would be brittle (PDF parsing alone is a project) and would lock the framework to one provider. Keeping it as prompts plus skills plus templates means it runs anywhere Claude Code runs, any team member can read and modify a skill without programming, and the bundle is forkable per-client or per-engagement without code review.
+        </div>
+
+      </div>
+
+      <div class="page-foot">
+        <span>03 · Architecture</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 04 · THE SKILLS — INTRO ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04 · THE SKILLS</div>
+        <h1 class="section-title">Six skills. <em class="serif">Composable, not coupled.</em></h1>
+        <p class="section-lede">Each skill is one role with one job. They follow the same internal structure — Role, Inputs, Process, Output, Quality checks, Anti-patterns — so they can be composed without knowing each other's internals.</p>
+      </header>
+
+      <div class="body">
+
+        <table class="data">
+          <thead>
+            <tr>
+              <th style="width: 22%;">Skill</th>
+              <th style="width: 18%;">Consumes</th>
+              <th style="width: 18%;">Produces</th>
+              <th>Headline guarantee</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><strong>pdf-analysis</strong></td>
+              <td>Source PDFs</td>
+              <td>01-requirements.md</td>
+              <td>Every claim downstream is traceable to a citation in source.</td>
+            </tr>
+            <tr>
+              <td><strong>tech-spec-builder</strong></td>
+              <td>01-requirements.md</td>
+              <td>02-tech-spec.md</td>
+              <td>Every REQ-ID is implemented by a module or explicitly deferred.</td>
+            </tr>
+            <tr>
+              <td><strong>ux-ui-designer</strong></td>
+              <td>01 + 02</td>
+              <td>03-ux-ui-system.md</td>
+              <td>Every user-facing REQ-ID maps to at least one screen.</td>
+            </tr>
+            <tr>
+              <td><strong>security-architect</strong></td>
+              <td>01 + 02 + 03</td>
+              <td>04-security-architecture.md</td>
+              <td>Every PII field is addressed by a control.</td>
+            </tr>
+            <tr>
+              <td><strong>budget-generator</strong></td>
+              <td>02 + 05-roadmap</td>
+              <td>06-budget.md</td>
+              <td>Every line item references a REQ-ID; PM, QA, and a risk reserve are present.</td>
+            </tr>
+            <tr>
+              <td><strong>contract-generator</strong></td>
+              <td>06 + 07 + 05</td>
+              <td>08-contract.md</td>
+              <td>Deliverables match the proposal one-to-one; totals match the budget.</td>
+            </tr>
+          </tbody>
+        </table>
+
+        <div class="callout" style="margin-top: 8mm;">
+          <strong>The skill template</strong>
+          Every skill file is structured the same way: <em class="serif">Role</em> (what it pretends to be), <em class="serif">Inputs</em> (which prior artifacts it consumes), <em class="serif">Process</em> (numbered steps), <em class="serif">Output</em> (the exact schema, plus a "How this was derived" footer), <em class="serif">Quality checks</em> (a self-audit before emission), and <em class="serif">Anti-patterns</em> (what to refuse).
+        </div>
+
+      </div>
+
+      <div class="page-foot">
+        <span>04 · The skills</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · pdf-analysis ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.1 · SKILL PROFILE</div>
+        <h1 class="section-title">pdf-analysis</h1>
+        <p class="section-lede">Extract structured, grounded data from one or more PDFs. Merge them. Detect contradictions. Emit the canonical requirements file that every downstream skill consumes.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-search"></i> /skills/pdf-analysis.md</span>
+          <span>FOUNDATION SKILL</span>
+          <span>OUTPUT · 01-requirements.md</span>
+        </div>
+
+        <h3>Role</h3>
+        <p>A domain-agnostic requirements analyst. Reads PDFs the way a senior engineer reads them on day one: sceptically, looking for what's said, what's almost said, what's contradicted, and what's missing. Does not summarise — extracts and normalises.</p>
+
+        <h3>Process</h3>
+        <ol class="steps">
+          <li><strong>Inventory.</strong> For each PDF: filename, page count, type, date (flag if missing), author, one-line role.</li>
+          <li><strong>Extract atomic claims.</strong> One fact, requirement, constraint, decision, or quote per claim. Each tagged and cited.</li>
+          <li><strong>Normalise.</strong> Assign stable REQ-IDs. Merge near-duplicates across documents. Convert vague terms ("fast", "scalable") into measurable form — or into an open question.</li>
+          <li><strong>Detect contradictions.</strong> Pairs of claims that cannot both be true. Recorded with both citations; never resolved by PDFjedi.</li>
+          <li><strong>Detect gaps.</strong> Anywhere a senior engineer would need more information to implement.</li>
+          <li><strong>Classify priority.</strong> MoSCoW, driven by the source language. Never silently upgrade a Should to a Must.</li>
+        </ol>
+
+        <h3>Quality checks</h3>
+        <ul class="bullets">
+          <li>Every claim has a citation.</li>
+          <li>No requirement contains "fast", "scalable", "modern", "user-friendly", or "seamless" without an open question pointing at it.</li>
+          <li>At least one open question — if there are zero, the model almost certainly missed real gaps and the analyst re-checks.</li>
+          <li>Every requirement ID is unique.</li>
+        </ul>
+
+        <h3>Anti-patterns it refuses</h3>
+        <ul class="bullets">
+          <li>Producing a prose summary instead of structured tables.</li>
+          <li>Picking a winner when two PDFs disagree.</li>
+          <li>Inferring requirements from "industry norms" — if the PDF didn't say it, it doesn't exist.</li>
+          <li>Silently upgrading priority because something "feels critical".</li>
+        </ul>
+      </div>
+
+      <div class="page-foot">
+        <span>04.1 · pdf-analysis</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · tech-spec-builder ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.2 · SKILL PROFILE</div>
+        <h1 class="section-title">tech-spec-builder</h1>
+        <p class="section-lede">Convert normalised requirements into an unambiguous technical specification an engineer can execute against without re-reading the source PDFs.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-diagram-3"></i> /skills/tech-spec-builder.md</span>
+          <span>OUTPUT · 02-tech-spec.md</span>
+          <span>TEMPLATE · tech-spec-template.md</span>
+        </div>
+
+        <h3>Role</h3>
+        <p>A staff-level engineer scoping a new project. Translates requirements into architecture, modules, data, APIs, and operations decisions. Makes conservative, defensible technology choices and documents the reasoning.</p>
+
+        <h3>The boring-tech rule</h3>
+        <p>When the source doesn't pin the stack, the skill picks the most-hireable, most-supported credible option for each tier. Exotic choices have to be justified in writing or they aren't made.</p>
+        <table class="data">
+          <thead><tr><th>Tier</th><th>Default starting point</th></tr></thead>
+          <tbody>
+            <tr><td>Frontend</td><td>Next.js + TypeScript + Tailwind</td></tr>
+            <tr><td>Backend</td><td>Node.js (Fastify / NestJS) or Python (FastAPI) — pick by team skill</td></tr>
+            <tr><td>Database</td><td>PostgreSQL</td></tr>
+            <tr><td>Background jobs</td><td>Managed queue or Redis-backed job runner</td></tr>
+            <tr><td>Auth</td><td>Hosted (Auth0 / Clerk / Cognito) unless self-hosted is required</td></tr>
+            <tr><td>Hosting</td><td>Major cloud or a PaaS (Vercel + Supabase, Render + Neon)</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Disambiguation strategy</h3>
+        <p>When the requirements are vague, the skill picks <em class="serif">the most specific defensible decision</em> and flags the ambiguity. "Must be fast" becomes "P95 &lt; 2s on broadband" plus an open question. "Scalable" becomes "10× current load without rewrite" plus an open question asking for current load.</p>
+
+        <h3>Quality checks</h3>
+        <ul class="bullets">
+          <li>Every module maps to ≥ 1 REQ-ID; every REQ-ID is satisfied or deferred.</li>
+          <li>Every integration lists protocol, auth, and direction of data flow.</li>
+          <li>Data model lists PII fields explicitly.</li>
+          <li>NFRs either have a number or an open question — never wishful adjectives.</li>
+          <li>Stack choices each have a one-to-two-line rationale.</li>
+        </ul>
+      </div>
+
+      <div class="page-foot">
+        <span>04.2 · tech-spec-builder</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · ux-ui-designer ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.3 · SKILL PROFILE</div>
+        <h1 class="section-title">ux-ui-designer</h1>
+        <p class="section-lede">Produce a complete UX/UI system: screen inventory, information architecture, components, interaction patterns, accessibility — derived strictly from the requirements. Never invents a brand.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-palette"></i> /skills/ux-ui-designer.md</span>
+          <span>OUTPUT · 03-ux-ui-system.md</span>
+          <span>DEFAULT TARGET · WCAG 2.1 AA</span>
+        </div>
+
+        <h3>Role</h3>
+        <p>A senior product designer working alongside engineering. Thinks in flows and states, not pixels. Produces the written design system that engineering and design will then realise visually.</p>
+
+        <h3>What it produces</h3>
+        <ul class="bullets">
+          <li><strong>Users &amp; jobs</strong> — one row per role, with top jobs-to-be-done and linked REQ-IDs.</li>
+          <li><strong>Information architecture</strong> — a site map with auth gating per page.</li>
+          <li><strong>Screen inventory</strong> — each screen has purpose, inputs (data fetched), outputs (user actions), states (empty / loading / success / error), and linked REQ-IDs.</li>
+          <li><strong>Component inventory</strong> — atoms, molecules, organisms, patterns; each with variants, props, and where used.</li>
+          <li><strong>Interaction patterns</strong> — auth, primary CRUD, payment, search, settings. Each flow has an explicit error path.</li>
+          <li><strong>Visual system</strong> — type scale, semantic colour tokens, spacing, radius. <em class="serif">Tokens only</em> when no brand is supplied.</li>
+          <li><strong>Accessibility</strong> — WCAG target, contrast, keyboard, focus, ARIA per pattern.</li>
+          <li><strong>Responsive strategy</strong> — breakpoints, mobile-first or not, components that change behaviour at breakpoints.</li>
+          <li><strong>Content &amp; copy rules</strong> — voice, microcopy, number/date/currency formatting, translation strategy.</li>
+        </ul>
+
+        <h3>What it refuses</h3>
+        <ul class="bullets">
+          <li>Inventing colours, fonts, logos, or brand decisions absent from the source.</li>
+          <li>Listing screens without states.</li>
+          <li>Skipping accessibility because the brief didn't mention it.</li>
+          <li>Producing prose paragraphs instead of structured inventories.</li>
+        </ul>
+      </div>
+
+      <div class="page-foot">
+        <span>04.3 · ux-ui-designer</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · security-architect ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.4 · SKILL PROFILE</div>
+        <h1 class="section-title">security-architect</h1>
+        <p class="section-lede">Define a secure-by-design architecture: threat model, controls, data-handling rules, identity and access, compliance mapping, and checklists the team can verify against.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-shield-check"></i> /skills/security-architect.md</span>
+          <span>OUTPUT · 04-security-architecture.md</span>
+          <span>BASELINE · OWASP ASVS L2</span>
+        </div>
+
+        <h3>Sections produced</h3>
+        <ol class="steps">
+          <li><strong>Scope &amp; compliance regimes</strong> — only what the source brings into scope. GDPR, HIPAA, SOC 2, PCI-DSS, Ley 25.326, LGPD.</li>
+          <li><strong>Data classification</strong> — every tech-spec entity is mapped to a class: Public, Internal, Confidential, PII, Sensitive PII, Auth Secret.</li>
+          <li><strong>Threat model (STRIDE)</strong> — 10–20 real threats per major component, with mitigation and residual risk. Not an exhaustive catalogue.</li>
+          <li><strong>Identity &amp; access</strong> — auth method, sessions, RBAC matrix, service-to-service auth, account lifecycle.</li>
+          <li><strong>Data protection</strong> — TLS, encryption at rest, backups, log PII allow-list, residency.</li>
+          <li><strong>Application security controls</strong> — input validation, output encoding, CSRF, rate limiting, security headers, secrets, audit trail.</li>
+          <li><strong>Infrastructure security</strong> — network segmentation, IAM, image scanning, DR posture.</li>
+          <li><strong>Compliance mapping</strong> — each regulation article mapped to the control that addresses it.</li>
+          <li><strong>Incident response</strong> — detection, triage roles, containment, notification, post-mortem.</li>
+          <li><strong>Launch-readiness checklist</strong> — every item testable, every item owned.</li>
+        </ol>
+
+        <h3>Calibration</h3>
+        <p>The skill matches rigour to risk. An internal tool with no PII gets a light version. Customer-facing SaaS with PII gets all sections, full STRIDE, full compliance mapping. Regulated industries (health, finance) get all of the above plus a written recommendation that a specialist auditor be engaged — recorded as an open question.</p>
+      </div>
+
+      <div class="page-foot">
+        <span>04.4 · security-architect</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · budget-generator ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.5 · SKILL PROFILE</div>
+        <h1 class="section-title">budget-generator</h1>
+        <p class="section-lede">Produce a structured, defensible budget with line items, role mix, assumptions, taxes, and a risk reserve. Aligned line-for-line with the tech spec and the roadmap.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-calculator"></i> /skills/budget-generator.md</span>
+          <span>OUTPUT · 06-budget.md</span>
+          <span>ESTIMATION · PERT (O · L · P)</span>
+        </div>
+
+        <h3>Estimation</h3>
+        <p>Effort is estimated per line item using the three-point PERT method:</p>
+        <pre class="code">expected = (optimistic + 4 × likely + pessimistic) / 6</pre>
+        <p>Person-days are rounded to half-days. Total expected effort, divided by team size, must roughly equal the roadmap duration — if the two are off by more than 30%, one of them is wrong and the budget halts until it's reconciled.</p>
+
+        <h3>Mandatory line items</h3>
+        <ul class="bullets">
+          <li><strong>Contingency / risk reserve</strong> — default 15%, raised to 20–25% for discovery-heavy or vague scopes, lowered to 10% only when the spec is unusually tight.</li>
+          <li><strong>Project management</strong> — a real line, not buried in overhead. Typically 10–15% of engineering effort.</li>
+          <li><strong>QA &amp; UAT</strong> — separate; not a free side-effect of engineering.</li>
+          <li><strong>DevOps / environments</strong> — set-up and ongoing.</li>
+          <li><strong>Discovery / kickoff</strong> — if the project starts with discovery, it's priced.</li>
+          <li><strong>Warranty period</strong> — typically 30 days of free bug-fix capacity post-acceptance, called out as zero-cost so the client knows it's included.</li>
+        </ul>
+
+        <h3>What it refuses</h3>
+        <ul class="bullets">
+          <li>A single lump-sum number with no breakdown.</li>
+          <li>Hiding PM in "overhead".</li>
+          <li>A budget without a risk reserve.</li>
+          <li>Inventing rates to make the math work. If rates are unsupplied, they remain bracketed placeholders and become open questions.</li>
+        </ul>
+
+        <h3>The discovery-quote escape valve</h3>
+        <p>When the source PDF is too vague to defend a number, the skill produces a small fixed-price discovery quote (one to two weeks) instead of a full project quote — plus a clearly-labelled rough-order-of-magnitude range. More honest than the alternative.</p>
+      </div>
+
+      <div class="page-foot">
+        <span>04.5 · budget-generator</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ Skill profile · contract-generator ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">04.6 · SKILL PROFILE</div>
+        <h1 class="section-title">contract-generator</h1>
+        <p class="section-lede">Draft a professional, signature-ready service contract that reflects the proposal exactly and complies with the locale and jurisdiction provided. Not legal advice — a high-quality first draft a lawyer can review in 30 minutes instead of three hours.</p>
+      </header>
+
+      <div class="body">
+        <div class="meta-row">
+          <span><i class="bi bi-file-earmark-text"></i> /skills/contract-generator.md</span>
+          <span>OUTPUT · 08-contract.md</span>
+          <span>NOT LEGAL ADVICE</span>
+        </div>
+
+        <h3>Variants by pricing model</h3>
+        <ul class="bullets">
+          <li><strong>Fixed-price</strong> — milestone-based payment, bounded scope, mandatory change-order process.</li>
+          <li><strong>Time-and-materials</strong> — rate card plus cap, invoicing cadence, time-reporting clause.</li>
+          <li><strong>Retainer</strong> — recurring fee, included capacity, scope ceiling, rollover policy.</li>
+        </ul>
+
+        <h3>Mandatory clauses</h3>
+        <p>Every variant includes, at minimum: scope of work, change-order process, acceptance (default five-business-day silent acceptance), intellectual property, confidentiality, data protection, warranty, limitation of liability (capped at 12 months of fees), termination (for cause, for convenience, kill-fee), force majeure, governing law &amp; jurisdiction, notices, entire agreement, signatures.</p>
+
+        <h3>Jurisdiction-aware adjustments</h3>
+        <table class="data">
+          <thead><tr><th>Locale</th><th>Adjustment</th></tr></thead>
+          <tbody>
+            <tr><td>Argentina</td><td>Spanish or bilingual; IVA where applicable; Tribunales Ordinarios de la Ciudad Autónoma de Buenos Aires unless specified.</td></tr>
+            <tr><td>Spain / EU</td><td>GDPR-compliant data clauses; Reglamento (UE) 2016/679.</td></tr>
+            <tr><td>USA (Delaware)</td><td>English; arbitration clause acceptable; reference to Delaware General Corporation Law where relevant.</td></tr>
+            <tr><td>UK</td><td>English; UK GDPR + DPA 2018; Limitation Act 1980 for warranty periods.</td></tr>
+            <tr><td>LATAM (general)</td><td>Local currency or USD with conversion clause; local tax wrapper.</td></tr>
+          </tbody>
+        </table>
+
+        <h3>What it refuses</h3>
+        <ul class="bullets">
+          <li>Copying generic US boilerplate into a non-US contract.</li>
+          <li>Setting unlimited liability or open-ended indemnity.</li>
+          <li>Omitting a change-order process.</li>
+          <li>Using vague deliverables — every deliverable has objective acceptance criteria.</li>
+          <li>Claiming to be final legal text. Lawyer review is recommended every time.</li>
+        </ul>
+      </div>
+
+      <div class="page-foot">
+        <span>04.6 · contract-generator</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 05 · TEMPLATES ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">05 · THE TEMPLATES</div>
+        <h1 class="section-title">Four templates. <em class="serif">Structural contracts</em> for every output.</h1>
+        <p class="section-lede">Templates define the exact section structure of each artifact: ordered numbered sections, fixed table column headers, bracketed placeholders for fields the skill will fill, and the "How this was derived" footer. They contain no instructions — that lives in skills.</p>
+      </header>
+
+      <div class="body">
+        <div class="grid-2">
+          <div class="card">
+            <span class="tag">/templates/tech-spec-template.md</span>
+            <h3>Tech spec template</h3>
+            <p>11 numbered sections: Overview, Users &amp; roles, Functional scope (by domain), Architecture (diagram, components, integrations), Data model, API surface, Non-functional requirements, Operations, Tech-stack decisions, Risks &amp; unknowns, Out of scope.</p>
+          </div>
+          <div class="card">
+            <span class="tag">/templates/contract-template.md</span>
+            <h3>Contract template</h3>
+            <p>Full MSA: 18 numbered sections (Scope, Term, Fees, Independent contractor, Acceptance, Change orders, IP, Confidentiality, Data protection, Warranty, LoL, Indemnification, Termination, Force majeure, Disputes, Notices, Miscellaneous, Governing law) plus Exhibits A–E.</p>
+          </div>
+          <div class="card">
+            <span class="tag">/templates/budget-template.md</span>
+            <h3>Budget template</h3>
+            <p>Summary table, rate card, phase-grouped line items with PERT estimates, project-wide lines (PM, QA, discovery, DevOps, warranty), payment schedule (per pricing model), optional add-ons, out-of-scope list, assumptions, client notes.</p>
+          </div>
+          <div class="card">
+            <span class="tag">/templates/proposal-template.md</span>
+            <h3>Proposal template</h3>
+            <p>Non-engineer-facing: Context, Deliverables table, Approach narrative, Roadmap at a glance, Team, Investment, Assumptions, Why us, What we need from you, Next step, Appendix.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Templates are the output contract</strong>
+          When a skill emits an artifact, it follows the template exactly. Sections cannot be reshaped or dropped. If a section does not apply to a given project, the skill writes "Not applicable." plus one sentence explaining why — never silence.
+        </div>
+
+        <h3>Localising or rebranding</h3>
+        <p>Because templates are pure structure, you can localise (e.g. ship a Spanish-language contract template) or rebrand (e.g. ship a corporate-tone proposal template) by editing only the template file. The skill that fills it is unaffected. Fork the template, change the master prompt to load the forked version, and the pipeline picks it up.</p>
+      </div>
+
+      <div class="page-foot">
+        <span>05 · The templates</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 06 · HOW TO USE ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">06 · HOW TO USE</div>
+        <h1 class="section-title">Three steps from PDF to <em class="serif">output bundle.</em></h1>
+        <p class="section-lede">There is nothing to install. PDFjedi is loaded as context into Claude Code, then driven with a single natural-language instruction. The framework runs inside the model session — your repo is the source of truth, not an executor.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Quick start — full pipeline</h3>
+
+        <ol class="steps">
+          <li>
+            <strong>Open Claude Code in this repo.</strong>
+            <pre class="code"><span class="mute">$</span> git clone https://github.com/Gxnza48/PDFjedi.git
+<span class="mute">$</span> cd PDFjedi
+<span class="mute">$</span> claude</pre>
+          </li>
+
+          <li>
+            <strong>Load the framework.</strong> Tell <img src="assets/claudecode.png" class="claude-icon" alt="Claude Code" /> Claude to load the master prompt, every skill, and every template. From here on it is PDFJedi.
+            <pre class="code"><span class="mute"># Load:</span>
+/prompts/master-prompt.md
+/skills/*
+/templates/*</pre>
+          </li>
+
+          <li>
+            <strong>Attach the PDF(s) and ask.</strong>
+            <pre class="code"><em class="serif">"Analyze this PDF and generate a full project:
+ tech spec, UX/UI system, contract, budget, roadmap."</em></pre>
+          </li>
+        </ol>
+
+        <h3>Targeted use — single skill</h3>
+        <p>Each skill is self-contained. To rebuild only the budget after the client changed scope, load:</p>
+        <pre class="code"><span class="mute"># Load:</span>
+/prompts/master-prompt.md
+/skills/budget-generator.md
+/templates/budget-template.md</pre>
+        <p>Then issue an instruction like "Build a budget for the project described in the attached tech spec. Currency USD. Pricing model fixed-price. Risk reserve 15%."</p>
+
+        <h3>Composed use — multi-document</h3>
+        <p>Throwing multiple PDFs in together produces a better result than running them one-by-one, because contradictions get surfaced. Load <code class="inline">pdf-analysis.md</code> plus <code class="inline">tech-spec-builder.md</code>, attach the brief plus the meeting notes plus the security requirements, and ask Claude to merge them and flag contradictions before building the tech spec.</p>
+
+      </div>
+
+      <div class="page-foot">
+        <span>06 · How to use</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 06b · Editing after a run ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">06 · HOW TO USE (cont.)</div>
+        <h1 class="section-title">Editing after a <em class="serif">run.</em></h1>
+        <p class="section-lede">Two reliable patterns for updating an existing output bundle. Both keep the bundle internally consistent.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Pattern 1 — re-run with an answer</h3>
+        <p>If the open-questions register had items and you now have answers:</p>
+        <pre class="code"><em class="serif">"Here are answers to the open questions:
+ - OQ-001: Performance target is P95 &lt; 1.5s.
+ - OQ-003: Team will be 1 senior + 1 mid, no dedicated QA.
+ - OQ-007: GDPR is in scope; LGPD is not.
+
+ Re-run the pipeline incorporating these answers.
+ Update only the artifacts that change."</em></pre>
+        <p>PDFjedi identifies which artifacts are affected by the change (via the dependency graph) and rewrites only those.</p>
+
+        <h3>Pattern 2 — targeted change</h3>
+        <p>If the client changed one thing:</p>
+        <pre class="code"><em class="serif">"The client moved the launch from 2026-09-01 to
+ 2026-10-15 and added a Spanish locale.
+ Update the roadmap, budget, proposal, and contract.
+ Surface any new open questions."</em></pre>
+
+        <h3>The recommended review order</h3>
+        <p>Once you have a bundle, read it in this order — it's the fastest path to a clean version:</p>
+        <ol class="steps">
+          <li><strong>99-open-questions.md</strong> — answer or accept each item before sharing externally.</li>
+          <li><strong>01-requirements.md</strong> — verify nothing important is missing or invented.</li>
+          <li><strong>02-tech-spec.md</strong> + <strong>04-security-architecture.md</strong> — engineering sign-off.</li>
+          <li><strong>06-budget.md</strong> — commercial sign-off.</li>
+          <li><strong>07-proposal.md</strong> + <strong>08-contract.md</strong> — share with legal and the client only after the above are clean.</li>
+        </ol>
+
+        <div class="callout">
+          <strong>Modes</strong>
+          The pipeline runs in <code class="inline">full</code>, <code class="inline">triage</code> (just requirements + open questions, fast read), <code class="inline">quote-only</code> (skip UX/UI and security; useful when the client only wants a number), or <code class="inline">single-artifact:&lt;name&gt;</code>. Mode is set via the Parameters block in <code class="inline">/prompts/pdf-to-product.md</code>.
+        </div>
+
+      </div>
+
+      <div class="page-foot">
+        <span>06 · How to use (cont.)</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 07 · WORKFLOW ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">07 · WORKFLOW</div>
+        <h1 class="section-title">The pipeline, the dependencies, <em class="serif">the failure modes.</em></h1>
+        <p class="section-lede">Each step consumes specific upstream artifacts and produces exactly one downstream artifact. The dependency graph is what makes minimal re-runs possible — when an input changes, only the affected steps rerun.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Dependencies</h3>
+        <table class="data">
+          <thead>
+            <tr><th>#</th><th>Skill</th><th>Consumes</th><th>Produces</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>1</td><td>pdf-analysis</td><td>Source PDF(s) + in-chat context</td><td>01-requirements.md</td></tr>
+            <tr><td>2</td><td>tech-spec-builder</td><td>01-requirements.md</td><td>02-tech-spec.md</td></tr>
+            <tr><td>3</td><td>ux-ui-designer</td><td>01 + 02</td><td>03-ux-ui-system.md</td></tr>
+            <tr><td>4</td><td>security-architect</td><td>01 + 02 + 03</td><td>04-security-architecture.md</td></tr>
+            <tr><td>5</td><td>(inline) roadmap</td><td>All upstream</td><td>05-roadmap.md</td></tr>
+            <tr><td>6</td><td>budget-generator</td><td>02 + 05</td><td>06-budget.md</td></tr>
+            <tr><td>7</td><td>(inline) proposal</td><td>01 + 05 + 06</td><td>07-proposal.md</td></tr>
+            <tr><td>8</td><td>contract-generator</td><td>05 + 06 + 07</td><td>08-contract.md</td></tr>
+            <tr><td>9</td><td>(inline) open-questions</td><td>All steps</td><td>99-open-questions.md</td></tr>
+          </tbody>
+        </table>
+
+        <h3>Failure modes &amp; recovery</h3>
+        <table class="data">
+          <thead><tr><th>Failure</th><th>How it manifests</th><th>Recovery</th></tr></thead>
+          <tbody>
+            <tr><td>Source PDF unreadable</td><td>Step 1 halts with an explanatory message</td><td>Re-OCR / re-export the PDF</td></tr>
+            <tr><td>Contradiction blocks pipeline</td><td>Step 1 emits requirements + open questions and refuses to proceed</td><td>Resolve top contradiction, re-run</td></tr>
+            <tr><td>Vague brief, empty NFRs</td><td>Tech spec emits open questions instead of numbers</td><td>Provide NFR targets in chat, re-run from step 2</td></tr>
+            <tr><td>Budget can't be defended</td><td>budget-generator emits a discovery quote instead</td><td>Accept the discovery quote or supply more inputs</td></tr>
+            <tr><td>Jurisdiction unknown</td><td>contract-generator stops at §3</td><td>Set the locale parameter, re-run from step 8</td></tr>
+          </tbody>
+        </table>
+
+        <p>In every case, the pipeline degrades gracefully — it produces less, not wrong.</p>
+
+      </div>
+
+      <div class="page-foot">
+        <span>07 · Workflow</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 08 · EXAMPLE ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">08 · EXAMPLE</div>
+        <h1 class="section-title">Northbeam Coffee. <em class="serif">A worked case</em> end-to-end.</h1>
+        <p class="section-lede">The repo ships with a synthetic Argentine specialty-coffee project under <code class="inline">examples/</code>. Two source documents — a client brief and an undated follow-up call — designed to contradict each other in three places so the pipeline's open-questions discipline is visible.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Input</h3>
+        <div class="grid-2">
+          <div class="card">
+            <span class="tag">examples/input/brief.pdf</span>
+            <h3>Client brief — 4 pages</h3>
+            <p>From Maya Rios, Head of Operations. Describes Northbeam's wholesale ordering pain at 40 accounts (target 200 by EOY), requested features, budget (~USD 50,000), launch (ideally end of August), AWS hosting, Spanish UI, GDPR for the Spain customer.</p>
+          </div>
+          <div class="card">
+            <span class="tag">examples/input/meeting-notes.pdf</span>
+            <h3>Follow-up call — 1 page, undated</h3>
+            <p>From a call with Maya and CFO Diego. Hardens the budget to USD 40,000 hard ceiling, hardens the launch to 2026-09-01, upgrades English from "later" to "in scope at launch", forbids US data residency.</p>
+          </div>
+        </div>
+
+        <div class="callout">
+          <strong>Three intentional contradictions</strong>
+          CTR-001 budget (50k vs 40k); CTR-002 launch date ("end of August" vs hard 2026-09-01); CTR-003 English locale ("not for v1" vs "in scope at launch"). The two PDFs together test whether the pipeline picks a winner — it doesn't.
+        </div>
+
+        <h3>What the pipeline produced</h3>
+        <table class="data">
+          <thead><tr><th>Artifact</th><th>Headline numbers</th></tr></thead>
+          <tbody>
+            <tr><td>01-requirements.md</td><td>21 normalised requirements, 47 atomic claims, 3 contradictions, 8 open questions</td></tr>
+            <tr><td>02-tech-spec.md</td><td>7 functional domains, Next.js + Postgres + AWS eu-west-1, region decision documented</td></tr>
+            <tr><td>03-ux-ui-system.md</td><td>19 screens, 17 components, WCAG 2.1 AA, semantic tokens (no brand supplied)</td></tr>
+            <tr><td>04-security-architecture.md</td><td>STRIDE on 12 components, GDPR + Ley 25.326 mapping, 17-item launch checklist</td></tr>
+            <tr><td>05-roadmap.md</td><td>8 phases over 18 weeks, hard launch 2026-09-01, critical path through reorder UX</td></tr>
+            <tr><td>06-budget.md</td><td>Two variants (USD 46k recommended / USD 38k 40k-ceiling), 119.6 person-days, 18% reserve</td></tr>
+            <tr><td>07-proposal.md</td><td>10 plain-language deliverables, milestone-based payments</td></tr>
+            <tr><td>08-contract.md</td><td>Argentina-governed MSA, Tribunales CABA, IVA-aware, Spanish-translation clause</td></tr>
+            <tr><td>99-open-questions.md</td><td>11 OQs · Top 3 blocking: precedence between PDFs, brand asset handover, Tango integration</td></tr>
+          </tbody>
+        </table>
+
+      </div>
+
+      <div class="page-foot">
+        <span>08 · Example: Northbeam Coffee</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 08b · EXAMPLE — what to look for ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">08 · EXAMPLE (cont.)</div>
+        <h1 class="section-title">What to look for when you <em class="serif">audit it.</em></h1>
+        <p class="section-lede">The example is most useful as a reading exercise. These are the moments where PDFjedi's discipline shows up most clearly — read with these in mind.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Contradictions surfaced, never resolved</h3>
+        <p>Open <code class="inline">01-requirements.md</code> §Contradictions detected. Three rows, each with both citations. PDFjedi does not pick the more recent document, does not pick the more conservative number, does not pick anything — it asks the client (OQ-001).</p>
+
+        <h3>Vague language disambiguated</h3>
+        <p>"Modern and professional" (brief, p.2) becomes <em class="serif">"component-driven, design-system based, accessible to WCAG 2.1 AA"</em> with a corresponding open question (OQ-002) asking for brand assets. The phrase never appears verbatim in the tech spec.</p>
+
+        <h3>Brand decisions deferred, not invented</h3>
+        <p>The UX/UI system uses semantic tokens — <code class="inline">color.brand.primary</code>, <code class="inline">font.body</code> — with TBD values pending Figma access. Compare with the typical "AI generates a teal-and-purple visual identity" output from less disciplined tools.</p>
+
+        <h3>Region decision shown, not buried</h3>
+        <p>REQ-017 says Argentina or EU, not US. There is no AWS region in Argentina; <code class="inline">sa-east-1</code> is São Paulo. PDFjedi picks <code class="inline">eu-west-1</code> to satisfy both the rule and the Spain-customer expectations — and writes the reasoning into the tech spec's stack-decisions table. The alternative is flagged as a one-line config change in OQ-010.</p>
+
+        <h3>Two budget variants, not one</h3>
+        <p>Because of CTR-001 (budget conflict), <code class="inline">06-budget.md</code> presents both <strong>Variant A — Full v1</strong> (USD 46k recommended) and <strong>Variant B — 40k ceiling</strong> with explicit scope reductions (defer EN locale, reduce admin pages, narrow a11y scope). The client picks at signature.</p>
+
+        <h3>Contract is jurisdiction-aware</h3>
+        <p>The contract is governed by Argentine law, dispute resolution at Tribunales Ordinarios de la Ciudad Autónoma de Buenos Aires, IVA 21% treatment per §3.2, language clause noting the Spanish translation is for convenience only, and a comment block flagging that the jurisdiction city and the English-vs-Spanish controlling-language choice both require lawyer review.</p>
+
+      </div>
+
+      <div class="page-foot">
+        <span>08 · Example: Northbeam (cont.)</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 09 · QUALITY RULES ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">09 · QUALITY RULES</div>
+        <h1 class="section-title">The reasoning the master prompt <em class="serif">enforces.</em></h1>
+        <p class="section-lede">PDFjedi is opinionated about how to decide things when the source is ambiguous. These rules live in the master prompt and apply to every artifact.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>Disambiguate before deciding</h3>
+        <p>If the source uses a fuzzy term ("scalable", "modern", "secure", "user-friendly"), PDFjedi picks <em class="serif">the strongest concrete reading the source supports</em> and records the ambiguity as an open question. Never silently chooses a meaning.</p>
+
+        <h3>Cheapest-credible interpretation</h3>
+        <p>When a requirement could be read two ways, PDFjedi picks the reading with the lowest credible delivery cost — and flags it. The client can upgrade scope; they can't unwind unflagged over-engineering.</p>
+
+        <h3>Contradictions are findings, not problems</h3>
+        <p>If two PDFs contradict each other, both versions go into open questions verbatim with citations. The client is the tiebreaker.</p>
+
+        <h3>Boring tech wins</h3>
+        <p>When the source doesn't specify a stack, prefer the most boring credible option (well-known, hireable, supported). Justify exotic choices in writing or don't make them.</p>
+
+        <h3>Round-trip test</h3>
+        <p>Before emitting any artifact, PDFjedi asks: <em class="serif">if a senior engineer read only this artifact, could they execute the work without re-reading the source PDF?</em> If no, the artifact is incomplete — it's fixed before emission, not surfaced as a caveat.</p>
+
+        <h3>The Monday-morning test</h3>
+        <p>The full bundle must let a small team start work on Monday: scope is bounded, dependencies are mapped, environment is buildable, the first ticket is obvious. If the bundle fails this test, the run isn't done.</p>
+
+        <h3>Quality gates run before every emission</h3>
+        <ul class="bullets">
+          <li>Every numeric claim has a citation.</li>
+          <li>Every requirement has a unique ID referenced from the tech spec, UX system, and budget line items.</li>
+          <li>No artifact contradicts another (e.g. budget includes a module the tech spec doesn't define).</li>
+          <li>No artifact contains TODOs, template placeholders, or "[REPLACE]" markers.</li>
+          <li>The open-questions register is non-empty (a zero count almost always means hallucination).</li>
+          <li>The roadmap's critical path is consistent with the budget's phasing.</li>
+          <li>The contract's deliverables match the proposal's deliverables one-to-one.</li>
+        </ul>
+
+      </div>
+
+      <div class="page-foot">
+        <span>09 · Quality rules</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 10 · EXTENDING ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">10 · EXTENDING PDFJEDI</h1>
+        <h1 class="section-title">Add a skill in <em class="serif">three files.</em></h1>
+        <p class="section-lede">Because PDFjedi is prompts and contracts rather than code, extension is just dropping new Markdown files in the right folders and adding a line to the master prompt's pipeline table.</p>
+      </header>
+
+      <div class="body">
+
+        <h3>To add a new artifact type</h3>
+        <ol class="steps">
+          <li>Create <code class="inline">templates/&lt;artifact&gt;-template.md</code> with the section structure.</li>
+          <li>Create <code class="inline">skills/&lt;skill&gt;.md</code> following the standard structure: Role, Inputs, Process, Output, Quality checks, Anti-patterns.</li>
+          <li>Add a row to the pipeline table in <code class="inline">/prompts/master-prompt.md</code> §4.</li>
+        </ol>
+        <p>No code changes anywhere. Optionally add a runbook variation in <code class="inline">/prompts/pdf-to-product.md</code> so the new step is part of the canonical full run.</p>
+
+        <h3>To localise for a new jurisdiction</h3>
+        <p>Edit <code class="inline">templates/contract-template.md</code> to add jurisdiction-specific clauses, or fork it as <code class="inline">contract-template.&lt;locale&gt;.md</code>. Add the new locale to the table in <code class="inline">skills/contract-generator.md</code>. Update the Locale parameter examples in <code class="inline">/prompts/pdf-to-product.md</code>.</p>
+
+        <h3>To change voice or branding</h3>
+        <p>Edit the <em class="serif">"Tone for client-facing artifacts"</em> section in the master prompt, or fork the entire master prompt as <code class="inline">master-prompt.&lt;variant&gt;.md</code> and load it in place of the default. Same skills, different voice.</p>
+
+        <h3>To swap the default stack</h3>
+        <p>Edit the <em class="serif">"Default starting point"</em> block in <code class="inline">skills/tech-spec-builder.md</code>. The boring-tech rule is implemented as a table — change the table, change the defaults. No other file is affected.</p>
+
+        <h3>Composition rules</h3>
+        <ul class="bullets">
+          <li>Skills are leaves, not internal nodes. A skill never invokes another skill — the master prompt orchestrates.</li>
+          <li>Templates are structural, not behavioural. Don't put instructions inside templates; they'll be filled into the output.</li>
+          <li>One file, one responsibility. If a file does two things, split it.</li>
+          <li>Idempotent re-runs. A skill given the same inputs produces the same output (modulo the model's natural variance).</li>
+        </ul>
+
+      </div>
+
+      <div class="page-foot">
+        <span>10 · Extending</span>
+        <span>PDFjedi · Master document</span>
+      </div>
+    </section>
+
+    <!-- ================ 11 · CREDITS ================ -->
+    <section class="page">
+      <header class="section-head">
+        <div class="section-no">11 · CREDITS &amp; LICENSE</div>
+        <h1 class="section-title">Credits &amp; <em class="serif">license.</em></h1>
+        <p class="section-lede">PDFjedi is open-source. The skills, templates, and prompts are released under the MIT license. Fork it, customise it per client, ship work with it.</p>
+      </header>
+
+      <div class="body">
+
+        <div class="grid-2">
+          <div class="card">
+            <span class="tag">Maintainer</span>
+            <h3>Gxnza48</h3>
+            <p>github.com/Gxnza48 · Author of the PDFjedi repository and the accompanying landing page.</p>
+          </div>
+          <div class="card">
+            <span class="tag">Runtime</span>
+            <h3><img src="assets/claudecode.png" class="claude-icon" alt="" /> Claude Code</h3>
+            <p>Anthropic's CLI / IDE / web client for Claude. PDFjedi is loaded as context into a Claude Code session.</p>
+          </div>
+          <div class="card">
+            <span class="tag">Landing page</span>
+            <h3>GSAP + Lenis</h3>
+            <p>GreenSock Animation Platform for animations and scroll-driven reveals. Lenis for smooth scrolling.</p>
+          </div>
+          <div class="card">
+            <span class="tag">Iconography</span>
+            <h3>Bootstrap Icons + Devicons</h3>
+            <p>Bootstrap Icons for UI iconography. Devicons for the stack-agnostic technology row on the landing page.</p>
+          </div>
+          <div class="card">
+            <span class="tag">Typography</span>
+            <h3>Space Grotesk · Inter · Instrument Serif · JetBrains Mono</h3>
+            <p>Google Fonts. Display, body, italic accents, and code respectively — same family across the landing page and this document.</p>
+          </div>
+          <div class="card">
+            <span class="tag">Claude Code icon</span>
+            <h3>lobe-icons</h3>
+            <p>github.com/lobehub/lobe-icons. Open-source icon set; the Claude Code mark used in the landing page and this document is taken from there.</p>
+          </div>
+        </div>
+
+        <hr class="rule"/>
+
+        <h3>License</h3>
+        <p>The PDFjedi repository is released under the <strong>MIT License</strong>. You can use it, fork it, customise it, ship client work with it, and redistribute it. The only requirements are that you keep the license notice intact and don't claim that this software comes with any warranty — it doesn't.</p>
+
+        <h3>Not legal advice</h3>
+        <p>The contract artifacts PDFjedi produces are professional drafts. They are <em class="serif">not legal advice</em>. A licensed attorney in the governing jurisdiction must review any contract before either party signs. The same applies to the security architecture: launch-readiness checklists are not a substitute for a real pen test.</p>
+
+        <hr class="rule"/>
+
+        <p class="small muted" style="text-align: center; margin-top: 12mm;">
+          Master document v1.0 · 2026-05-13 · github.com/Gxnza48/PDFjedi
+        </p>
+
+      </div>
+
+    </section>
+
+  </body>
+</html>
