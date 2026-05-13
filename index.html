@@ -1,0 +1,611 @@
+<!doctype html>
+<html lang="en" data-theme="dark">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>PDFjedi — Turn any PDF into a complete digital project</title>
+    <meta name="description" content="A modular AI skill system for Claude Code. Convert PDFs into tech specs, UX/UI systems, contracts, budgets, and roadmaps — citation-grounded, production-ready." />
+
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/devicons/devicon@v2.16.0/devicon.min.css" />
+
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <!-- Grain texture overlay -->
+    <div class="grain" aria-hidden="true"></div>
+
+    <!-- Cursor -->
+    <div class="cursor" aria-hidden="true">
+      <div class="cursor-dot"></div>
+      <div class="cursor-ring"></div>
+    </div>
+
+    <!-- Scroll progress -->
+    <div class="scroll-progress" aria-hidden="true"></div>
+
+    <!-- Header -->
+    <header class="site-header" data-reveal>
+      <div class="container nav">
+        <a href="#top" class="brand" aria-label="PDFjedi home">
+          <span class="brand-mark" aria-hidden="true">
+            <svg width="28" height="28" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="3" y="3" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.6"/>
+              <path d="M9 11h10M9 14h10M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+              <circle cx="20" cy="20" r="3" fill="currentColor"/>
+            </svg>
+          </span>
+          <span class="brand-text">PDFjedi</span>
+        </a>
+
+        <nav class="nav-links" aria-label="Primary">
+          <a href="#what">What it does</a>
+          <a href="#how">How to use</a>
+          <a href="#skills">Skills</a>
+          <a href="#architecture">Architecture</a>
+          <a href="#example">Example</a>
+        </nav>
+
+        <div class="nav-actions">
+          <button class="theme-toggle" id="themeToggle" type="button" aria-label="Toggle theme" aria-pressed="false">
+            <i class="bi bi-sun-fill" data-icon="sun" aria-hidden="true"></i>
+            <i class="bi bi-moon-stars-fill" data-icon="moon" aria-hidden="true"></i>
+          </button>
+          <a class="btn btn-primary" href="https://github.com/Gxnza48/PDFjedi" target="_blank" rel="noopener">
+            <i class="bi bi-github" aria-hidden="true"></i>
+            <span>View on GitHub</span>
+          </a>
+        </div>
+      </div>
+    </header>
+
+    <main id="top">
+      <!-- HERO -->
+      <section class="hero">
+        <div class="container hero-grid">
+          <div class="hero-text">
+            <span class="eyebrow" data-reveal>
+              <span class="dot"></span>
+              AI Skill System · for Claude Code
+            </span>
+
+            <h1 class="hero-title">
+              <span class="line" data-split>Turn any PDF</span>
+              <span class="line" data-split>into a <em>complete</em></span>
+              <span class="line" data-split>digital project.</span>
+            </h1>
+
+            <p class="hero-sub" data-reveal>
+              Tech specs, UX/UI systems, contracts, budgets, and roadmaps —
+              generated from your source PDFs by a modular skill framework.
+              Citation-grounded. Production-ready. No invention.
+            </p>
+
+            <div class="hero-cta" data-reveal>
+              <a class="btn btn-primary btn-lg" href="https://github.com/Gxnza48/PDFjedi" target="_blank" rel="noopener">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                Open the repo
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-ghost btn-lg" href="#how">
+                <i class="bi bi-play-circle" aria-hidden="true"></i>
+                See how it works
+              </a>
+            </div>
+
+            <ul class="hero-stats" data-reveal>
+              <li><strong data-count="9">0</strong><span>artifacts produced</span></li>
+              <li><strong data-count="6">0</strong><span>composable skills</span></li>
+              <li><strong data-count="4">0</strong><span>reusable templates</span></li>
+              <li><strong data-count="1">0</strong><span>pipeline, no install</span></li>
+            </ul>
+          </div>
+
+          <!-- Hero visual: code window + output tree -->
+          <aside class="hero-visual" aria-hidden="true">
+            <div class="window window-prompt" data-float="1">
+              <div class="window-bar">
+                <span class="dot-tl"></span><span class="dot-tl"></span><span class="dot-tl"></span>
+                <span class="window-title">claude-code</span>
+              </div>
+              <pre class="window-body"><code><span class="c-mute"># Load:</span>
+<span class="c-fg">/prompts/master-prompt.md</span>
+<span class="c-fg">/skills/*</span>
+<span class="c-fg">/templates/*</span>
+
+<span class="c-mute"># Then:</span>
+<span class="c-em">"Analyze this PDF and generate
+ a full project."</span>
+<span class="caret">▍</span></code></pre>
+            </div>
+
+            <div class="window window-output" data-float="2">
+              <div class="window-bar">
+                <span class="dot-tl"></span><span class="dot-tl"></span><span class="dot-tl"></span>
+                <span class="window-title">output/</span>
+              </div>
+              <ul class="filetree">
+                <li><i class="bi bi-file-earmark-text"></i> 01-requirements.md</li>
+                <li><i class="bi bi-file-earmark-code"></i> 02-tech-spec.md</li>
+                <li><i class="bi bi-file-earmark-richtext"></i> 03-ux-ui-system.md</li>
+                <li><i class="bi bi-shield-lock"></i> 04-security-architecture.md</li>
+                <li><i class="bi bi-map"></i> 05-roadmap.md</li>
+                <li><i class="bi bi-cash-stack"></i> 06-budget.md</li>
+                <li><i class="bi bi-file-earmark-pdf"></i> 07-proposal.md</li>
+                <li><i class="bi bi-file-earmark-check"></i> 08-contract.md</li>
+                <li><i class="bi bi-question-circle"></i> 99-open-questions.md</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+
+        <!-- Marquee -->
+        <div class="marquee" aria-hidden="true">
+          <div class="marquee-track">
+            <span>Tech specifications</span><span class="sep">●</span>
+            <span>UX/UI systems</span><span class="sep">●</span>
+            <span>Contracts</span><span class="sep">●</span>
+            <span>Budgets</span><span class="sep">●</span>
+            <span>Roadmaps</span><span class="sep">●</span>
+            <span>Security architecture</span><span class="sep">●</span>
+            <span>Open questions</span><span class="sep">●</span>
+            <span>Proposals</span><span class="sep">●</span>
+            <span>Tech specifications</span><span class="sep">●</span>
+            <span>UX/UI systems</span><span class="sep">●</span>
+            <span>Contracts</span><span class="sep">●</span>
+            <span>Budgets</span><span class="sep">●</span>
+            <span>Roadmaps</span><span class="sep">●</span>
+            <span>Security architecture</span><span class="sep">●</span>
+            <span>Open questions</span><span class="sep">●</span>
+            <span>Proposals</span><span class="sep">●</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- WHAT IT DOES -->
+      <section class="section" id="what">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow" data-reveal><span class="dot"></span>What it does</span>
+            <h2 class="section-title" data-reveal>
+              The most under-tooled step in client work,<br/>
+              <em>turned into a framework.</em>
+            </h2>
+            <p class="section-lede" data-reveal>
+              Reading a PDF and turning it into a project is messy: unstructured, contradictory, partly out-of-date.
+              PDFjedi treats that gap as the actual product surface. The output isn't a summary — it's the artifacts
+              your team would have built anyway.
+            </p>
+          </div>
+
+          <!-- Bento grid: the 9 artifacts -->
+          <div class="bento">
+            <article class="card card-lg" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-file-earmark-code"></i>
+                <span class="tag">02 · Tech spec</span>
+              </div>
+              <h3>Technical specification</h3>
+              <p>Architecture, modules, APIs, data model, NFRs — written so an engineer can scope from it without re-reading the PDF.</p>
+              <ul class="bullets">
+                <li>Boring-tech defaults</li>
+                <li>Per-module REQ-ID traceability</li>
+                <li>Round-trip-tested</li>
+              </ul>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-list-check"></i>
+                <span class="tag">01 · Requirements</span>
+              </div>
+              <h3>Normalized requirements</h3>
+              <p>Atomic claims, deduped across PDFs, every one cited back to source.</p>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-grid-3x3-gap"></i>
+                <span class="tag">03 · UX/UI</span>
+              </div>
+              <h3>UX/UI system</h3>
+              <p>Screens, components, interaction flows, accessibility rules — written for engineering, not for Figma.</p>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-shield-lock"></i>
+                <span class="tag">04 · Security</span>
+              </div>
+              <h3>Security architecture</h3>
+              <p>STRIDE threat model, controls, compliance mapping (GDPR, Ley 25.326), launch-readiness checklist.</p>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-map"></i>
+                <span class="tag">05 · Roadmap</span>
+              </div>
+              <h3>Roadmap &amp; milestones</h3>
+              <p>Phases, dependencies, parallelism, critical path — calibrated against the budget's PERT estimates.</p>
+            </article>
+
+            <article class="card card-lg" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-cash-stack"></i>
+                <span class="tag">06 · Budget</span>
+              </div>
+              <h3>Defensible budget</h3>
+              <p>PERT-estimated line items, explicit risk reserve, taxes, payment schedule, optional add-ons, out-of-scope. No invented rates.</p>
+              <div class="mini-table" aria-hidden="true">
+                <div class="row head"><span>Phase</span><span>Days</span><span>Subtotal</span></div>
+                <div class="row"><span>Foundations</span><span>13.4</span><span>$4,020</span></div>
+                <div class="row"><span>Catalog &amp; pricing</span><span>17.4</span><span>$5,220</span></div>
+                <div class="row"><span>Ordering &amp; reorder</span><span>12.2</span><span>$3,660</span></div>
+                <div class="row total"><span>Risk reserve (18%)</span><span>—</span><span>$7,020</span></div>
+              </div>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-file-earmark-pdf"></i>
+                <span class="tag">07 · Proposal</span>
+              </div>
+              <h3>Client-facing proposal</h3>
+              <p>Plain-language deliverables, roadmap-at-a-glance, investment table, next step.</p>
+            </article>
+
+            <article class="card" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-file-earmark-check"></i>
+                <span class="tag">08 · Contract</span>
+              </div>
+              <h3>Signature-ready contract</h3>
+              <p>Jurisdiction-aware MSA that mirrors the proposal one-to-one. Lawyer review still required.</p>
+            </article>
+
+            <article class="card card-wide" data-reveal>
+              <div class="card-head">
+                <i class="bi bi-question-circle"></i>
+                <span class="tag">99 · Open questions</span>
+              </div>
+              <h3>Open-questions register</h3>
+              <p>Every gap, contradiction, and ambiguity surfaced as a question instead of an invention. The register is non-empty by design — a zero count means the model hallucinated.</p>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- HOW TO USE -->
+      <section class="section section-alt" id="how">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow" data-reveal><span class="dot"></span>How to use</span>
+            <h2 class="section-title" data-reveal>
+              Three steps from PDF to <em>output bundle.</em>
+            </h2>
+            <p class="section-lede" data-reveal>
+              There is nothing to install. PDFjedi is loaded as context into Claude Code, then driven with a single natural-language instruction.
+            </p>
+          </div>
+
+          <ol class="steps">
+            <li class="step" data-reveal>
+              <div class="step-head">
+                <span class="step-no">01</span>
+                <h3>Clone &amp; open</h3>
+              </div>
+              <p>Bring the repo down locally and open a Claude Code session inside it.</p>
+              <pre class="code"><code><span class="c-mute">$</span> git clone https://github.com/Gxnza48/PDFjedi.git
+<span class="c-mute">$</span> cd PDFjedi
+<span class="c-mute">$</span> claude</code></pre>
+            </li>
+
+            <li class="step" data-reveal>
+              <div class="step-head">
+                <span class="step-no">02</span>
+                <h3>Load the framework</h3>
+              </div>
+              <p>Tell Claude to load the master prompt, every skill, and every template. From here on it is PDFJedi.</p>
+              <pre class="code"><code><span class="c-mute"># Load:</span>
+/prompts/master-prompt.md
+/skills/*
+/templates/*</code></pre>
+            </li>
+
+            <li class="step" data-reveal>
+              <div class="step-head">
+                <span class="step-no">03</span>
+                <h3>Attach the PDF &amp; ask</h3>
+              </div>
+              <p>Drop one or more PDFs into the chat, then issue the instruction. The full bundle lands in <code>output/</code>.</p>
+              <pre class="code"><code><span class="c-em">"Analyze this PDF and generate
+ a full project: tech spec, UX/UI
+ system, contract, budget, roadmap."</span></code></pre>
+            </li>
+          </ol>
+        </div>
+      </section>
+
+      <!-- SKILLS -->
+      <section class="section" id="skills">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow" data-reveal><span class="dot"></span>Skills · /skills</span>
+            <h2 class="section-title" data-reveal>
+              Six skills. <em>Composable, not coupled.</em>
+            </h2>
+            <p class="section-lede" data-reveal>
+              Each skill is one role, one job. The master prompt orchestrates; skills don't silently call each other.
+              Use the whole pipeline or load just one.
+            </p>
+          </div>
+
+          <div class="skills-grid">
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-search"></i></div>
+              <h3>pdf-analysis</h3>
+              <p>Atomic claim extraction, normalization, multi-PDF merge, contradiction detection.</p>
+              <code class="kbd">/skills/pdf-analysis.md</code>
+            </article>
+
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-diagram-3"></i></div>
+              <h3>tech-spec-builder</h3>
+              <p>Requirements → unambiguous tech spec. Disambiguates vague language without inventing scope.</p>
+              <code class="kbd">/skills/tech-spec-builder.md</code>
+            </article>
+
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-palette"></i></div>
+              <h3>ux-ui-designer</h3>
+              <p>Screen inventory, component library, interactions, WCAG AA accessibility rules.</p>
+              <code class="kbd">/skills/ux-ui-designer.md</code>
+            </article>
+
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-shield-check"></i></div>
+              <h3>security-architect</h3>
+              <p>STRIDE threat model, controls, data classification, GDPR + local compliance mapping.</p>
+              <code class="kbd">/skills/security-architect.md</code>
+            </article>
+
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-calculator"></i></div>
+              <h3>budget-generator</h3>
+              <p>PERT estimates, role-mix, risk reserve, payment schedule, optional add-ons, out-of-scope.</p>
+              <code class="kbd">/skills/budget-generator.md</code>
+            </article>
+
+            <article class="skill" data-reveal>
+              <div class="skill-icon"><i class="bi bi-file-earmark-text"></i></div>
+              <h3>contract-generator</h3>
+              <p>Jurisdiction-aware MSA. Deliverables mirror the proposal one-to-one. Lawyer review still required.</p>
+              <code class="kbd">/skills/contract-generator.md</code>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <!-- ARCHITECTURE -->
+      <section class="section section-alt" id="architecture">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow" data-reveal><span class="dot"></span>Architecture</span>
+            <h2 class="section-title" data-reveal>
+              Three layers. <em>Plain text. No runtime.</em>
+            </h2>
+            <p class="section-lede" data-reveal>
+              PDFjedi is prompts and contracts, not code. Layers are separated so each can change independently — the philosophy, the process, and the output schema.
+            </p>
+          </div>
+
+          <div class="arch-layers">
+            <div class="arch-layer" data-reveal>
+              <div class="arch-layer-no">L1</div>
+              <div class="arch-layer-body">
+                <div class="arch-layer-head">
+                  <h3>Master prompt</h3>
+                  <code class="kbd">/prompts/master-prompt.md</code>
+                </div>
+                <p>Defines the PDFJedi role, the operating contract (grounding, no-invention, templates-as-contract, reasoning-visible), the pipeline order, and reasoning rules for ambiguous source material. Always loaded first.</p>
+              </div>
+              <i class="bi bi-arrow-down arch-arrow"></i>
+            </div>
+
+            <div class="arch-layer" data-reveal>
+              <div class="arch-layer-no">L2</div>
+              <div class="arch-layer-body">
+                <div class="arch-layer-head">
+                  <h3>Skills (modular)</h3>
+                  <code class="kbd">/skills/*.md</code>
+                </div>
+                <p>Each skill is one role with strict inputs, a numbered process, an output schema, and quality checks. Skills compose through the master prompt — they never invoke each other.</p>
+              </div>
+              <i class="bi bi-arrow-down arch-arrow"></i>
+            </div>
+
+            <div class="arch-layer" data-reveal>
+              <div class="arch-layer-no">L3</div>
+              <div class="arch-layer-body">
+                <div class="arch-layer-head">
+                  <h3>Templates (structural contracts)</h3>
+                  <code class="kbd">/templates/*.md</code>
+                </div>
+                <p>Define the exact section structure of every output artifact. Contain no instructions — that's why you can rebrand or relocalize PDFjedi by editing templates alone.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- EXAMPLE -->
+      <section class="section" id="example">
+        <div class="container">
+          <div class="section-head">
+            <span class="eyebrow" data-reveal><span class="dot"></span>Example bundle</span>
+            <h2 class="section-title" data-reveal>
+              From a 5-page brief to a <em>signable contract.</em>
+            </h2>
+            <p class="section-lede" data-reveal>
+              The repo ships with a synthetic Argentine wholesale-coffee project — brief + contradictory follow-up notes — and the full expected bundle. Open <code>examples/output/</code> to read it end-to-end.
+            </p>
+          </div>
+
+          <div class="example-grid">
+            <div class="example-pane" data-reveal>
+              <div class="window window-static">
+                <div class="window-bar">
+                  <span class="dot-tl"></span><span class="dot-tl"></span><span class="dot-tl"></span>
+                  <span class="window-title">examples/input/</span>
+                </div>
+                <ul class="filetree dense">
+                  <li><i class="bi bi-file-earmark-pdf"></i> brief.pdf <span class="mute">— 4 pages</span></li>
+                  <li><i class="bi bi-file-earmark-pdf"></i> meeting-notes.pdf <span class="mute">— 1 page, undated</span></li>
+                </ul>
+                <div class="callout">
+                  <i class="bi bi-exclamation-circle"></i>
+                  <span>3 contradictions on budget, launch date, and locale.</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="example-pane" data-reveal>
+              <div class="window window-static">
+                <div class="window-bar">
+                  <span class="dot-tl"></span><span class="dot-tl"></span><span class="dot-tl"></span>
+                  <span class="window-title">examples/output/</span>
+                </div>
+                <ul class="filetree dense">
+                  <li><i class="bi bi-file-earmark-text"></i> 01-requirements.md <span class="mute">21 reqs · 47 claims</span></li>
+                  <li><i class="bi bi-file-earmark-code"></i> 02-tech-spec.md <span class="mute">7 domains</span></li>
+                  <li><i class="bi bi-file-earmark-richtext"></i> 03-ux-ui-system.md <span class="mute">19 screens · 17 components</span></li>
+                  <li><i class="bi bi-shield-lock"></i> 04-security-architecture.md <span class="mute">STRIDE · GDPR + Ley 25.326</span></li>
+                  <li><i class="bi bi-map"></i> 05-roadmap.md <span class="mute">8 phases · 18 weeks</span></li>
+                  <li><i class="bi bi-cash-stack"></i> 06-budget.md <span class="mute">2 variants · 119.6 days</span></li>
+                  <li><i class="bi bi-file-earmark-pdf"></i> 07-proposal.md <span class="mute">10 deliverables</span></li>
+                  <li><i class="bi bi-file-earmark-check"></i> 08-contract.md <span class="mute">MSA · Argentina</span></li>
+                  <li><i class="bi bi-question-circle"></i> 99-open-questions.md <span class="mute">11 OQs · top 3 flagged</span></li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stack-agnostic devicons row -->
+          <div class="stack" data-reveal>
+            <p class="stack-lede">Stack-agnostic outputs — boring-tech defaults when the source doesn't pin a stack:</p>
+            <ul class="stack-icons">
+              <li><i class="devicon-nextjs-original-wordmark"></i><span>Next.js</span></li>
+              <li><i class="devicon-typescript-plain"></i><span>TypeScript</span></li>
+              <li><i class="devicon-nodejs-plain"></i><span>Node.js</span></li>
+              <li><i class="devicon-postgresql-plain"></i><span>PostgreSQL</span></li>
+              <li><i class="devicon-redis-plain"></i><span>Redis</span></li>
+              <li><i class="devicon-amazonwebservices-plain-wordmark"></i><span>AWS</span></li>
+              <li><i class="devicon-tailwindcss-plain"></i><span>Tailwind</span></li>
+              <li><i class="devicon-docker-plain"></i><span>Docker</span></li>
+              <li><i class="devicon-github-original"></i><span>GitHub Actions</span></li>
+              <li><i class="devicon-figma-plain"></i><span>Figma</span></li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <!-- CTA -->
+      <section class="cta">
+        <div class="container">
+          <div class="cta-card" data-reveal>
+            <h2>Ready to skip the discovery&nbsp;grind?</h2>
+            <p>Clone PDFjedi, drop a real brief into Claude Code, and ship a signable bundle by Friday.</p>
+            <div class="cta-actions">
+              <a class="btn btn-primary btn-lg" href="https://github.com/Gxnza48/PDFjedi" target="_blank" rel="noopener">
+                <i class="bi bi-github" aria-hidden="true"></i>
+                Get PDFjedi on GitHub
+                <i class="bi bi-arrow-up-right" aria-hidden="true"></i>
+              </a>
+              <a class="btn btn-ghost btn-lg" href="https://github.com/Gxnza48/PDFjedi/tree/main/docs" target="_blank" rel="noopener">
+                <i class="bi bi-book" aria-hidden="true"></i>
+                Read the docs
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div class="footer-brand">
+          <a href="#top" class="brand">
+            <span class="brand-mark" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="3" y="3" width="22" height="22" rx="3" stroke="currentColor" stroke-width="1.6"/>
+                <path d="M9 11h10M9 14h10M9 17h6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+                <circle cx="20" cy="20" r="3" fill="currentColor"/>
+              </svg>
+            </span>
+            <span class="brand-text">PDFjedi</span>
+          </a>
+          <p class="footer-tag">An AI skill system for Claude Code.</p>
+        </div>
+
+        <div class="footer-col">
+          <h4>Repository</h4>
+          <ul>
+            <li><a href="https://github.com/Gxnza48/PDFjedi" target="_blank" rel="noopener"><i class="bi bi-github"></i> Source on GitHub</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/README.md" target="_blank" rel="noopener"><i class="bi bi-file-earmark-text"></i> README</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/tree/main/examples" target="_blank" rel="noopener"><i class="bi bi-folder2-open"></i> Examples</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Docs</h4>
+          <ul>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/docs/how-to-use.md" target="_blank" rel="noopener"><i class="bi bi-arrow-right-short"></i> How to use</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/docs/workflow.md" target="_blank" rel="noopener"><i class="bi bi-arrow-right-short"></i> Workflow</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/docs/system-architecture.md" target="_blank" rel="noopener"><i class="bi bi-arrow-right-short"></i> System architecture</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h4>Skills</h4>
+          <ul>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/pdf-analysis.md" target="_blank" rel="noopener">pdf-analysis</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/tech-spec-builder.md" target="_blank" rel="noopener">tech-spec-builder</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/ux-ui-designer.md" target="_blank" rel="noopener">ux-ui-designer</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/security-architect.md" target="_blank" rel="noopener">security-architect</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/budget-generator.md" target="_blank" rel="noopener">budget-generator</a></li>
+            <li><a href="https://github.com/Gxnza48/PDFjedi/blob/main/skills/contract-generator.md" target="_blank" rel="noopener">contract-generator</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="container footer-bottom">
+        <p>
+          Built &amp; maintained by
+          <a href="https://github.com/Gxnza48" target="_blank" rel="noopener" class="credit"><i class="bi bi-github"></i> Gxnza48</a>.
+          Released under the MIT license.
+        </p>
+        <p class="footer-meta">
+          <span>GSAP</span><span class="sep">·</span>
+          <span>Lenis</span><span class="sep">·</span>
+          <span>Bootstrap Icons</span><span class="sep">·</span>
+          <span>Devicons</span>
+        </p>
+      </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.20/dist/lenis.min.js"></script>
+    <script src="script.js"></script>
+  </body>
+</html>
